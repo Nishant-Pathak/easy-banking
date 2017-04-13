@@ -1,0 +1,13 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.drawers.banklib">
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
+
+    <application android:allowBackup="true"
+                 android:label="@string/app_name"
+                 android:supportsRtl="true"
+    >
+        <receiver android:name=".receiver.MessageBroadcastReceiver"/>
+    </application>
+
+</manifest>
