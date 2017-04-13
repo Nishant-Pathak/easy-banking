@@ -22,5 +22,4 @@ public class MappingFileParserTest {
     Map<String, MappingModel> parse = parser.parse();
     assertNotNull(parse);
   }
-
 }

@@ -2,22 +2,29 @@ package com.drawers.banklib.client;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.view.ViewGroup;
 
 import com.drawers.banklib.R;
 import com.drawers.banklib.utils.EventListener;
 import com.drawers.banklib.utils.MappingFileParser;
+import com.drawers.banklib.utils.MappingModel;
 
+import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public final class EasyBankClientBuilder {
 
-  private Context context;
+  private WeakReference<Context> context;
+  private WeakReference<ViewGroup> parentView;
 
   private List<EventListener> eventListeners;
 
-  public EasyBankClientBuilder(@NonNull Context context) {
-    this.context = context;
+  public EasyBankClientBuilder(@NonNull Context context, @NonNull ViewGroup viewGroup) {
+    this.context = new WeakReference<>(context);
+    this.parentView = new WeakReference<>(viewGroup);
     eventListeners = new LinkedList<>();
   }
 
@@ -36,12 +43,16 @@ public final class EasyBankClientBuilder {
     return this;
   }
 
-
-  public EasyBankClient build() {
-    MappingFileParser mappingFileParser = new MappingFileParser(context.getResources().openRawResource(R.raw.mapping));
-    EasyBankClient bankClient = new EasyBankClientImpl(this.context, eventListeners);
-    this.eventListeners = null;
-    this.context = null;
-    return bankClient;
+  public EasyBankClient build() throws IOException {
+    MappingFileParser mappingFileParser =
+      new MappingFileParser(context.get().getResources().openRawResource(R.raw.mapping));
+    Map<String, MappingModel> mappingModelMap = mappingFileParser.parse();
+    return
+      new EasyBankClientImpl(
+        this.context.get(),
+        this.parentView.get(),
+        eventListeners,
+        mappingModelMap
+      );
   }
 }
