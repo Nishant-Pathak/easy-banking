@@ -1,0 +1,24 @@
+[
+  {
+    "URL_REGEX": {
+      "inputTextSelectors": [
+        {
+          "id": "TID1",
+          "text": "TL1"
+        }
+      ],
+      "optionSelectors": [
+        {
+          "id": "OID1",
+          "text": "OL1"
+        }
+      ],
+      "buttonSelectors": [
+        {
+          "id": "BID1",
+          "text": "BL1"
+        }
+      ]
+    }
+  }
+]

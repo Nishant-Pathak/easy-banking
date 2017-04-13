@@ -3,6 +3,7 @@ package com.drawers.banklib.client;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.provider.Telephony;
+import android.webkit.WebView;
 
 import com.drawers.banklib.receiver.MessageBroadcastReceiver;
 import com.drawers.banklib.utils.EventListener;
@@ -27,5 +28,10 @@ class EasyBankClientImpl extends EasyBankClient  {
   @Override
   public void onDestroy() {
     context.unregisterReceiver(receiver);
+  }
+
+  @Override
+  public void onPageFinished(WebView view, String url) {
+    super.onPageFinished(view, url);
   }
 }

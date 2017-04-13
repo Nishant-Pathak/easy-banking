@@ -3,7 +3,9 @@ package com.drawers.banklib.client;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.drawers.banklib.R;
 import com.drawers.banklib.utils.EventListener;
+import com.drawers.banklib.utils.MappingFileParser;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -36,6 +38,7 @@ public final class EasyBankClientBuilder {
 
 
   public EasyBankClient build() {
+    MappingFileParser mappingFileParser = new MappingFileParser(context.getResources().openRawResource(R.raw.mapping));
     EasyBankClient bankClient = new EasyBankClientImpl(this.context, eventListeners);
     this.eventListeners = null;
     this.context = null;
