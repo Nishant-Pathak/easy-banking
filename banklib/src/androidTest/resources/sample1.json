@@ -7,7 +7,7 @@
           "text": "TL1"
         }
       ],
-      "optionSelectors": [
+      "radioSelectors": [
         {
           "id": "OID1",
           "text": "OL1"

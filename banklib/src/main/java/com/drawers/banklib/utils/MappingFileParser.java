@@ -5,6 +5,11 @@ import android.util.JsonReader;
 import android.util.Log;
 import android.util.Pair;
 
+import com.drawers.banklib.model.BaseModel;
+import com.drawers.banklib.model.ButtonModel;
+import com.drawers.banklib.model.InputTextModel;
+import com.drawers.banklib.model.RadioModel;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -31,7 +36,9 @@ public class MappingFileParser {
       e.printStackTrace();
     } finally {
       if (reader != null) {
-        reader.close();
+        try {
+          reader.close();
+        } catch (Exception ignore) {}
       }
     }
     return null;
@@ -49,9 +56,9 @@ public class MappingFileParser {
   }
 
   private Pair<String, MappingModel> readMapping(JsonReader reader) throws IOException {
-    List<MappingModel.Selector> inputTextSelectors = new ArrayList<>(1);
-    List<MappingModel.Selector> optionSelectors = new ArrayList<>(1);
-    List<MappingModel.Selector> buttonSelectors = new ArrayList<>(1);
+    List<InputTextModel> inputTextSelectors = new ArrayList<>(1);
+    List<RadioModel> radioSelectors = new ArrayList<>(1);
+    List<ButtonModel> buttonSelectors = new ArrayList<>(1);
     reader.beginObject();
     String urlRegex = reader.nextName();
     reader.beginObject();
@@ -59,13 +66,13 @@ public class MappingFileParser {
       String name = reader.nextName();
       switch (name) {
         case "inputTextSelectors":
-          inputTextSelectors = readSelectors(reader);
+          inputTextSelectors = readSelectors(reader, InputTextModel.class);
           break;
-        case "optionSelectors":
-          optionSelectors = readSelectors(reader);
+        case "radioSelectors":
+          radioSelectors = readSelectors(reader, RadioModel.class);
           break;
         case "buttonSelectors":
-          buttonSelectors = readSelectors(reader);
+          buttonSelectors = readSelectors(reader, ButtonModel.class);
           break;
         default:
           Log.d(TAG, String.format("%s not found", name));
@@ -75,34 +82,36 @@ public class MappingFileParser {
     reader.endObject();
     return Pair.create(
       urlRegex,
-      new MappingModel(urlRegex, inputTextSelectors, optionSelectors, buttonSelectors)
+      new MappingModel(urlRegex, inputTextSelectors, radioSelectors, buttonSelectors)
     );
   }
 
-  private List<MappingModel.Selector> readSelectors(JsonReader reader) throws IOException {
-    List<MappingModel.Selector> selectors = new ArrayList<>(1);
+  private <T> List<T> readSelectors(JsonReader reader, Class<? extends BaseModel> modelClass) throws IOException {
+    List<T> selectors = new ArrayList<>(1);
     reader.beginArray();
     while (reader.hasNext()) {
-      selectors.add(readSelector(reader));
+      selectors.add((T) readSelector(reader, modelClass));
     }
     reader.endArray();
     return selectors;
   }
 
-  private MappingModel.Selector readSelector(JsonReader reader) throws IOException {
-    String id = null;
-    String text = null;
+  private <T extends BaseModel> T readSelector(
+    JsonReader reader,
+    Class<? extends BaseModel> modelClass
+  ) throws IOException {
+    BaseModel baseModel = null;
     reader.beginObject();
-    while (reader.hasNext()) {
-      String name = reader.nextName();
-      if ("id".equals(name)) {
-        id = reader.nextString();
-      } else if ("text".equals(name)) {
-        text = reader.nextString();
-      }
-
+    if (modelClass.equals(RadioModel.class)) {
+      baseModel = RadioModel.parse(reader);
+    }
+    if (modelClass.equals(InputTextModel.class)) {
+      baseModel = InputTextModel.parse(reader);
+    }
+    if (modelClass.equals(ButtonModel.class)) {
+      baseModel = ButtonModel.parse(reader);
     }
     reader.endObject();
-    return new MappingModel.Selector(id, text);
+    return (T) baseModel;
   }
 }
