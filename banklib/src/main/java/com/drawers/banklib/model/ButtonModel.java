@@ -4,17 +4,27 @@ import android.util.JsonReader;
 
 import java.io.IOException;
 
-public class ButtonModel extends BaseModel {
+public class ButtonModel implements BaseModel {
+  private final String selector;
   private final String text;
 
   public ButtonModel(String selector, String text) {
-    super(selector);
+    this.selector = selector;
     this.text = text;
   }
 
-  public static BaseModel parse(JsonReader reader) throws IOException {
+  public String getSelector() {
+    return selector;
+  }
+
+  public String getText() {
+    return text;
+  }
+
+  public static ButtonModel parse(JsonReader reader) throws IOException {
     String selector = null;
     String text = null;
+    reader.beginObject();
     while (reader.hasNext()) {
       String name = reader.nextName();
       if ("selector".equals(name)) {
@@ -26,6 +36,7 @@ public class ButtonModel extends BaseModel {
     if (selector == null || text == null) {
       throw new IOException();
     }
+    reader.endObject();
     return new ButtonModel(selector, text);
   }
 }

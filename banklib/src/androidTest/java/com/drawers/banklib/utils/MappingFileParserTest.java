@@ -3,6 +3,8 @@ package com.drawers.banklib.utils;
 import android.support.test.filters.SmallTest;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.drawers.banklib.model.BaseModel;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -19,7 +21,7 @@ public class MappingFileParserTest {
   public void parse() throws Exception {
     InputStream resource = MappingFileParserTest.class.getClassLoader().getResourceAsStream("sample1.json");
     MappingFileParser parser = new MappingFileParser(resource);
-    Map<String, MappingModel> parse = parser.parse();
+    Map<String, BaseModel> parse = parser.parse();
     assertNotNull(parse);
   }
 }

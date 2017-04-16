@@ -4,12 +4,21 @@ import android.util.JsonReader;
 
 import java.io.IOException;
 
-public class RadioModel extends BaseModel {
+class RadioButtonModel implements BaseModel {
+  private final String selector;
   private final String text;
 
-  public RadioModel(String selector, String text) {
-    super(selector);
+  private RadioButtonModel(String selector, String text) {
+    this.selector = selector;
     this.text = text;
+  }
+
+  public String getSelector() {
+    return selector;
+  }
+
+  public String getText() {
+    return text;
   }
 
   public static BaseModel parse(JsonReader reader) throws IOException {
@@ -26,6 +35,6 @@ public class RadioModel extends BaseModel {
     if (selector == null || text == null) {
       throw new IOException();
     }
-    return new RadioModel(selector, text);
+    return new RadioButtonModel(selector, text);
   }
 }

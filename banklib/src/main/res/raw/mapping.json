@@ -1,27 +1,37 @@
 [
   {
     "URL_REGEX": {
-      "inputTextSelectors": [
-        {
-          "selector": "TID1",
-          "label": "TL1",
-          "otpSender": "ICICI",
-          "otpRegex": "\d\d\d\d\d\d"
-
-        }
-      ],
-      "radioSelectors": [
-        {
-          "selector": "OID1",
-          "text": "OL1"
-        }
-      ],
-      "buttonSelectors": [
-        {
-          "selector": "BID1",
-          "text": "BL1"
-        }
-      ]
+      "otpScreen": {
+        "otpInputSelector": "TID1",
+        "label": "TL1",
+        "otpSender": "ICICI",
+        "otpRegex": "\\d\\d\\d\\d\\d\\d",
+        "waitTime": 30000,
+        "buttons": [
+          {
+            "selector": "BID1",
+            "text": "BL1"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "URL_REGEX": {
+      "paymentChoiceScreen":{
+        "radioButtons": [
+          {
+            "selector": "OID1",
+            "text": "OL1"
+          }
+        ],
+        "buttons": [
+          {
+            "selector": "BID1",
+            "text": "BL1"
+          }
+        ]
+      }
     }
   }
 ]

@@ -1,24 +1,19 @@
 [
   {
     "URL_REGEX": {
-      "inputTextSelectors": [
-        {
-          "id": "TID1",
-          "text": "TL1"
-        }
-      ],
-      "radioSelectors": [
-        {
-          "id": "OID1",
-          "text": "OL1"
-        }
-      ],
-      "buttonSelectors": [
-        {
-          "id": "BID1",
-          "text": "BL1"
-        }
-      ]
+      "otpScreen": {
+        "otpInputSelector": "TID1",
+        "label": "TL1",
+        "otpSender": "ICICI",
+        "otpRegex": "\\d\\d\\d\\d\\d\\d",
+        "waitTime": 3000,
+        "buttons": [
+          {
+            "selector": "BID1",
+            "text": "BL1"
+          }
+        ]
+      }
     }
   }
 ]

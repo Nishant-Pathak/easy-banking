@@ -5,9 +5,9 @@ import android.support.annotation.NonNull;
 import android.view.ViewGroup;
 
 import com.drawers.banklib.R;
+import com.drawers.banklib.model.BaseModel;
 import com.drawers.banklib.utils.EventListener;
 import com.drawers.banklib.utils.MappingFileParser;
-import com.drawers.banklib.utils.MappingModel;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -46,13 +46,13 @@ public final class EasyBankClientBuilder {
   public EasyBankClient build() throws IOException {
     MappingFileParser mappingFileParser =
       new MappingFileParser(context.get().getResources().openRawResource(R.raw.mapping));
-    Map<String, MappingModel> mappingModelMap = mappingFileParser.parse();
+    Map<String, BaseModel> models = mappingFileParser.parse();
     return
       new EasyBankClientImpl(
         this.context.get(),
         this.parentView.get(),
         eventListeners,
-        mappingModelMap
+        models
       );
   }
 }

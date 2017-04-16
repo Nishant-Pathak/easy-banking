@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 
 import com.drawers.banklib.client.receiver.MessageBroadcastReceiver;
+import com.drawers.banklib.model.BaseModel;
 import com.drawers.banklib.utils.EventListener;
-import com.drawers.banklib.utils.MappingModel;
 
 import java.util.List;
 import java.util.Map;
@@ -22,14 +22,14 @@ class EasyBankClientImpl extends EasyBankClient implements MessageListener {
 
   private final ViewGroup parent;
 
-  private final Map<String, MappingModel> mappingModelMap;
+  private final Map<String, BaseModel> mappingModelMap;
 
   private final List<EventListener> listeners;
   EasyBankClientImpl(
     @NonNull Context context,
     @NonNull ViewGroup parent,
     @NonNull List<EventListener> listeners,
-    @NonNull Map<String, MappingModel> mappingModelMap
+    @NonNull Map<String, BaseModel> mappingModelMap
   ) {
     this.context = context;
     this.parent = parent;
