@@ -21,9 +21,10 @@ class RadioButtonModel implements BaseModel {
     return text;
   }
 
-  public static BaseModel parse(JsonReader reader) throws IOException {
+  public static RadioButtonModel parse(JsonReader reader) throws IOException {
     String selector = null;
     String text = null;
+    reader.beginObject();
     while (reader.hasNext()) {
       String name = reader.nextName();
       if ("selector".equals(name)) {
@@ -35,6 +36,7 @@ class RadioButtonModel implements BaseModel {
     if (selector == null || text == null) {
       throw new IOException();
     }
+    reader.endObject();
     return new RadioButtonModel(selector, text);
   }
 }

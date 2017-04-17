@@ -1,0 +1,20 @@
+[
+  {
+    "URL_REGEX": {
+      "paymentChoiceScreen":{
+        "radioButtons": [
+          {
+            "selector": "OID1",
+            "text": "OL1"
+          }
+        ],
+        "buttons": [
+          {
+            "selector": "BID1",
+            "text": "BL1"
+          }
+        ]
+      }
+    }
+  }
+]
