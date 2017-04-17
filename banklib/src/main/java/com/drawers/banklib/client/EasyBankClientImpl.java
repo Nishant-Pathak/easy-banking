@@ -58,14 +58,14 @@ class EasyBankClientImpl extends EasyBankClient implements MessageListener {
     // FIXME: 13/4/17 check for compatibility
     IntentFilter intentFilter = new IntentFilter(Telephony.Sms.Intents.SMS_RECEIVED_ACTION);
     context.registerReceiver(receiver, intentFilter);
-    webView.addJavascriptInterface(new JavaScriptInterfaces(listeners), "EasyBank");
+    webView.addJavascriptInterface(new JavaScriptInterfaces(listeners), JS_INTERFACE);
 
   }
 
   @Override
   public void onDestroy() {
     context.unregisterReceiver(receiver);
-    webView.removeJavascriptInterface("EasyBank");
+    webView.removeJavascriptInterface(JS_INTERFACE);
   }
 
   @Override

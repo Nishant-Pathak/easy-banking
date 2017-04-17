@@ -7,8 +7,7 @@ import android.util.Log;
 import com.drawers.banklib.utils.BankLibHelper;
 
 import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.EnumMap;
 
 public class OtpModel implements BaseModel {
   private static final String TAG = OtpModel.class.getSimpleName();
@@ -18,7 +17,9 @@ public class OtpModel implements BaseModel {
   private final String otpRegex;
   private final long waitTime;
 
-  private final List<ButtonModel> buttons;
+  private final EnumMap<ButtonModel.Type, ButtonModel> buttons;
+
+  private String otp;
 
   public OtpModel(
     @NonNull String otpInputSelector,
@@ -26,7 +27,7 @@ public class OtpModel implements BaseModel {
     @NonNull String otpSender,
     @NonNull String otpRegex,
     long waitTime,
-    @NonNull List<ButtonModel> buttons
+    @NonNull EnumMap<ButtonModel.Type, ButtonModel> buttons
   ) {
     this.otpInputSelector = otpInputSelector;
     this.label = label;
@@ -56,8 +57,12 @@ public class OtpModel implements BaseModel {
     return waitTime;
   }
 
-  public List<ButtonModel> getButtons() {
+  public EnumMap<ButtonModel.Type, ButtonModel> getButtons() {
     return buttons;
+  }
+
+  public String getOtp() {
+    return otp;
   }
 
   public static BaseModel parse(JsonReader reader) throws IOException {
@@ -66,7 +71,7 @@ public class OtpModel implements BaseModel {
     String otpSender = null;
     String otpRegex = null;
     long waitTime = 0;
-    List<ButtonModel> buttonModels = null;
+    EnumMap<ButtonModel.Type, ButtonModel> buttonModels = null;
     reader.beginObject();
     while (reader.hasNext()) {
       String name = reader.nextName();
@@ -88,9 +93,10 @@ public class OtpModel implements BaseModel {
           break;
         case "buttons":
           reader.beginArray();
-          buttonModels = new LinkedList<>();
+          buttonModels = new EnumMap<>(ButtonModel.Type.class);
           while (reader.hasNext()) {
-            buttonModels.add(ButtonModel.parse(reader));
+            ButtonModel buttonModel = ButtonModel.parse(reader);
+            buttonModels.put(buttonModel.getType(), buttonModel);
           }
           reader.endArray();
           break;
@@ -106,7 +112,11 @@ public class OtpModel implements BaseModel {
   }
 
   public void updateMessage(String sender, String payload) {
-
+    // TODO: 17/4/17 extract otp and populate
   }
 
+  @Override
+  public String getName() {
+    return TAG + "_" + otpRegex;
+  }
 }
