@@ -6,17 +6,18 @@ import android.util.JsonReader;
 import com.drawers.banklib.utils.BankLibHelper;
 
 import java.io.IOException;
+import java.util.EnumMap;
 import java.util.LinkedList;
 import java.util.List;
 
 public class PaymentChoiceModel implements BaseModel {
   private final String TAG = PaymentChoiceModel.class.getSimpleName();
   private final List<RadioButtonModel> radioButtons;
-  private final List<ButtonModel> buttons;
+  private final EnumMap<ButtonModel.Type, ButtonModel> buttons;
 
   public PaymentChoiceModel(
     @NonNull List<RadioButtonModel> radioButtons,
-    @NonNull List<ButtonModel> buttons
+    @NonNull EnumMap<ButtonModel.Type, ButtonModel> buttons
   ) {
     this.radioButtons = radioButtons;
     this.buttons = buttons;
@@ -26,13 +27,13 @@ public class PaymentChoiceModel implements BaseModel {
     return radioButtons;
   }
 
-  public List<ButtonModel> getButtons() {
+  public EnumMap<ButtonModel.Type, ButtonModel> getButtons() {
     return buttons;
   }
 
   public static BaseModel parse(JsonReader reader) throws IOException {
     List<RadioButtonModel> radioButtonModels = null;
-    List<ButtonModel> buttonModels = null;
+    EnumMap<ButtonModel.Type, ButtonModel> buttonModels = null;
     reader.beginObject();
     while (reader.hasNext()) {
       String name = reader.nextName();
@@ -45,9 +46,10 @@ public class PaymentChoiceModel implements BaseModel {
         reader.endArray();
       } else if ("buttons".equals(name)) {
         reader.beginArray();
-        buttonModels = new LinkedList<>();
+        buttonModels = new EnumMap<>(ButtonModel.Type.class);
         while (reader.hasNext()) {
-          buttonModels.add(ButtonModel.parse(reader));
+          ButtonModel buttonModel = ButtonModel.parse(reader);
+          buttonModels.put(buttonModel.getType(), ButtonModel.parse(reader));
         }
         reader.endArray();
       }

@@ -45,9 +45,6 @@ public class ButtonModel implements BaseModel {
         text = reader.nextString();
       }
     }
-    if (selector == null || text == null) {
-      throw new IOException();
-    }
     reader.endObject();
     BankLibHelper.requireNonNull(type, selector, text);
     return new ButtonModel(type, selector, text);

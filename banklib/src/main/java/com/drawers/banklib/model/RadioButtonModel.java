@@ -2,6 +2,8 @@ package com.drawers.banklib.model;
 
 import android.util.JsonReader;
 
+import com.drawers.banklib.utils.BankLibHelper;
+
 import java.io.IOException;
 
 class RadioButtonModel implements BaseModel {
@@ -34,10 +36,8 @@ class RadioButtonModel implements BaseModel {
         text = reader.nextString();
       }
     }
-    if (selector == null || text == null) {
-      throw new IOException();
-    }
     reader.endObject();
+    BankLibHelper.requireNonNull(selector, text);
     return new RadioButtonModel(selector, text);
   }
 

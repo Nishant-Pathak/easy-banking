@@ -6,12 +6,19 @@
         "label": "TL1",
         "otpSender": "ICICI",
         "otpRegex": "\\d\\d\\d\\d\\d\\d",
-        "waitTime": 3000,
+        "waitTime": 30000,
         "buttons": [
           {
+            "type": "SUBMIT",
             "selector": "BID1",
-            "text": "BL1"
+            "text": "Submit"
+          },
+          {
+            "type": "CANCEL",
+            "selector": "BID1",
+            "text": "Cancel"
           }
+
         ]
       }
     }

@@ -5,11 +5,22 @@
         "radioButtons": [
           {
             "selector": "OID1",
-            "text": "OL1"
+            "text": "option1"
+          },
+          {
+            "selector": "OID2",
+            "text": "option2"
           }
+
         ],
         "buttons": [
           {
+            "type": "SUBMIT",
+            "selector": "BID1",
+            "text": "BL1"
+          },
+          {
+            "type": "CANCEL",
             "selector": "BID1",
             "text": "BL1"
           }
