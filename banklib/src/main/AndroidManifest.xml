@@ -7,7 +7,7 @@
                  android:label="@string/app_name"
                  android:supportsRtl="true"
     >
-        <receiver android:name=".client.receiver.MessageBroadcastReceiver"/>
+        <receiver android:name=".receiver.MessageBroadcastReceiver"/>
     </application>
 
 </manifest>

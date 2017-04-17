@@ -1,4 +1,4 @@
-package com.drawers.banklib.client.receiver;
+package com.drawers.banklib.receiver;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

@@ -8,9 +8,9 @@ import android.support.annotation.NonNull;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 
-import com.drawers.banklib.client.receiver.MessageBroadcastReceiver;
+import com.drawers.banklib.receiver.MessageBroadcastReceiver;
 import com.drawers.banklib.events.EventListener;
-import com.drawers.banklib.events.JavaScriptInterfaces;
+import com.drawers.banklib.JavaScriptInterfaces;
 import com.drawers.banklib.model.BaseModel;
 import com.drawers.banklib.model.OtpModel;
 import com.drawers.banklib.model.PaymentChoiceModel;
@@ -22,7 +22,7 @@ import com.drawers.banklib.view.PaymentChoiceView;
 import java.util.List;
 import java.util.Map;
 
-class EasyBankClientImpl extends EasyBankClient implements MessageListener {
+final class EasyBankClientImpl extends EasyBankClient implements MessageListener {
 
   private final Context context;
 
@@ -44,13 +44,12 @@ class EasyBankClientImpl extends EasyBankClient implements MessageListener {
 
   EasyBankClientImpl(
     @NonNull Context context,
-    @NonNull ViewGroup parent,
     WebView webView, @NonNull List<EventListener> listeners,
     @NonNull Map<String, BaseModel> mappingModelMap
   ) {
     this.context = context;
-    this.parent = parent;
     this.webView = webView;
+    this.parent = (ViewGroup) webView.getParent();
     this.mappingModelMap = mappingModelMap;
     this.receiver = new MessageBroadcastReceiver(this);
     this.bankView = null;
@@ -66,48 +65,71 @@ class EasyBankClientImpl extends EasyBankClient implements MessageListener {
   public void onDestroy() {
     context.unregisterReceiver(receiver);
     webView.removeJavascriptInterface(JS_INTERFACE);
+    if (loadingView != null) {
+      loadingView.removeFromView(parent);
+    }
   }
 
   @Override
   public void onPageStarted(WebView view, String url, Bitmap favicon) {
-    currentUrl = url;
     if (bankView != null) {
       bankView.removeFromView(parent);
     }
     loadingView.addToView(context, parent);
-    // TODO: 17/4/17 iterate on all keys and check for regex match
-    if (mappingModelMap.containsKey(url)) {
-      currentModel = mappingModelMap.get(url);
-      if (currentModel instanceof OtpModel) {
-        bankView = new OtpScreenView((OtpModel) currentModel);
-      } else if(currentModel instanceof PaymentChoiceModel) {
-        bankView = new PaymentChoiceView((PaymentChoiceModel) currentModel);
-      }
-      receiver.setMappingKey(url);
-    }
     super.onPageStarted(view, url, favicon);
   }
 
   @Override
   public void onPageFinished(WebView view, String url) {
     loadingView.removeFromView(parent);
-    if (bankView != null) {
-      bankView.addToView(context, parent);
-    }
-    // TODO: 13/4/17 inject appropriate javascript and show appropriate view
+    processPageFinished(view, url);
     super.onPageFinished(view, url);
   }
 
+  /**
+   * Task to do as page loaded
+   * 1. remove loading view.
+   * 2. Search url regex in mappingModelMap, if found update currentModel and currentUrl
+   * 3. show the new view, populated with given models.
+   * @param view
+   * @param url
+   */
+  private void processPageFinished(WebView view, String url) {
+    if (bankView != null) {
+      bankView.addToView(context, parent);
+    }
+    if (mappingModelMap.containsKey(url)) {
+      currentModel = mappingModelMap.get(url);
+      if (currentModel instanceof OtpModel) {
+        bankView = new OtpScreenView((OtpModel) currentModel, this);
+      } else if(currentModel instanceof PaymentChoiceModel) {
+        bankView = new PaymentChoiceView((PaymentChoiceModel) currentModel);
+      }
+      receiver.setMappingKey(url);
+    }
+
+  }
+
+  /**
+   * update the currentModel with the message received.
+   *
+   * @param sender
+   * @param payload
+   */
   @Override
   public void onMessageReceived(
-    @NonNull String url,
     @NonNull String sender,
     @NonNull String payload
   ) {
-    if (url.equals(currentUrl)) {
-      if (currentModel instanceof OtpModel) {
-        ((OtpModel)currentModel).updateMessage(sender, payload);
-      }
+    if (currentModel instanceof OtpModel) {
+      ((OtpModel)currentModel).updateMessage(sender, payload);
+    }
+  }
+
+  @Override
+  public void loadJavaScript(@NonNull String javaScript) {
+    if (webView != null) {
+      webView.loadUrl(javaScript);
     }
   }
 }

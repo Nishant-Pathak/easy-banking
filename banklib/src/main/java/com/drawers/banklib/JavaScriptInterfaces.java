@@ -1,10 +1,15 @@
-package com.drawers.banklib.events;
+package com.drawers.banklib;
 
 import android.webkit.JavascriptInterface;
 
+import com.drawers.banklib.events.EventListener;
+
 import java.util.List;
 
-public class JavaScriptInterfaces {
+/**
+ * call javascript code from java
+ */
+public final class JavaScriptInterfaces {
   private final List<EventListener> listeners;
 
   public JavaScriptInterfaces(List<EventListener> listeners) {

@@ -6,6 +6,9 @@ import android.view.ViewGroup;
 
 import com.drawers.banklib.model.PaymentChoiceModel;
 
+/**
+ * when web url matches paymentChoiceScreen element
+ */
 public class PaymentChoiceView implements BankView {
   private final PaymentChoiceModel model;
 

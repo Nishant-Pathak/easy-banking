@@ -19,18 +19,15 @@ import java.util.Map;
 public final class EasyBankClientBuilder {
 
   private final WeakReference<Context> context;
-  private final WeakReference<ViewGroup> parentView;
   private final WeakReference<WebView> webView;
 
   private final List<EventListener> eventListeners;
 
   public EasyBankClientBuilder(
     @NonNull Context context,
-    @NonNull ViewGroup viewGroup,
     @NonNull WebView webView
     ) {
     this.context = new WeakReference<>(context);
-    this.parentView = new WeakReference<>(viewGroup);
     this.webView = new WeakReference<>(webView);
     eventListeners = new LinkedList<>();
   }
@@ -60,7 +57,6 @@ public final class EasyBankClientBuilder {
     return
       new EasyBankClientImpl(
         this.context.get(),
-        this.parentView.get(),
         this.webView.get(),
         eventListeners,
         models

@@ -9,9 +9,16 @@
         "waitTime": 30000,
         "buttons": [
           {
+            "type": "SUBMIT",
             "selector": "BID1",
-            "text": "BL1"
+            "text": "Submit"
+          },
+          {
+            "type": "CANCEL",
+            "selector": "BID1",
+            "text": "Cancel"
           }
+
         ]
       }
     }

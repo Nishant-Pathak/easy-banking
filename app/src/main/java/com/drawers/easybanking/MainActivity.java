@@ -19,19 +19,16 @@ public class MainActivity extends AppCompatActivity {
 
   private WebView webView;
 
-  private FrameLayout parentView;
-
   private EasyBankClient easyBankClient;
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     webView = (WebView) findViewById(R.id.web_view);
-    parentView = (FrameLayout) findViewById(R.id.fl_activity_main);
     webView.getSettings().setJavaScriptEnabled(true);
     try {
       easyBankClient =
-        new EasyBankClientBuilder(MainActivity.this, parentView, webView)
+        new EasyBankClientBuilder(MainActivity.this, webView)
           .addEventListener(new EventListener() {
             @Override
             public void onEvent(int code, @NonNull String eventName) {
