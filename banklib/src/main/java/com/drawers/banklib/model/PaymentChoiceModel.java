@@ -9,11 +9,11 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
-public class PaymentChoiceScreen implements BaseModel {
+public class PaymentChoiceModel implements BaseModel {
   private final List<RadioButtonModel> radioButtons;
   private final List<ButtonModel> buttons;
 
-  public PaymentChoiceScreen(
+  public PaymentChoiceModel(
     @NonNull List<RadioButtonModel> radioButtons,
     @NonNull List<ButtonModel> buttons
   ) {
@@ -53,6 +53,6 @@ public class PaymentChoiceScreen implements BaseModel {
     }
     reader.endObject();
     BankLibHelper.requireNonNull(radioButtonModels, buttonModels);
-    return new PaymentChoiceScreen(radioButtonModels, buttonModels);
+    return new PaymentChoiceModel(radioButtonModels, buttonModels);
   }
 }

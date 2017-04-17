@@ -6,8 +6,8 @@ import android.util.Log;
 import android.util.Pair;
 
 import com.drawers.banklib.model.BaseModel;
-import com.drawers.banklib.model.OtpScreenModel;
-import com.drawers.banklib.model.PaymentChoiceScreen;
+import com.drawers.banklib.model.OtpModel;
+import com.drawers.banklib.model.PaymentChoiceModel;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -62,10 +62,10 @@ public class MappingFileParser {
       String name = reader.nextName();
       switch (name) {
         case "otpScreen":
-          model = OtpScreenModel.parse(reader);
+          model = OtpModel.parse(reader);
           break;
         case "paymentChoiceScreen":
-          model = PaymentChoiceScreen.parse(reader);
+          model = PaymentChoiceModel.parse(reader);
           break;
         default:
           Log.d(TAG, String.format("%s not found", name));

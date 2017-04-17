@@ -10,8 +10,8 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
-public class OtpScreenModel implements BaseModel {
-  private static final String TAG = OtpScreenModel.class.getSimpleName();
+public class OtpModel implements BaseModel {
+  private static final String TAG = OtpModel.class.getSimpleName();
   private final String otpInputSelector;
   private final String label;
   private final String otpSender;
@@ -20,7 +20,7 @@ public class OtpScreenModel implements BaseModel {
 
   private final List<ButtonModel> buttons;
 
-  public OtpScreenModel(
+  public OtpModel(
     @NonNull String otpInputSelector,
     @NonNull String label,
     @NonNull String otpSender,
@@ -102,7 +102,11 @@ public class OtpScreenModel implements BaseModel {
     reader.endObject();
 
     BankLibHelper.requireNonNull(otpInputSelector, otpSender, otpRegex, buttonModels);
-    return new OtpScreenModel(otpInputSelector, label, otpSender, otpRegex, waitTime, buttonModels);
+    return new OtpModel(otpInputSelector, label, otpSender, otpRegex, waitTime, buttonModels);
+  }
+
+  public void updateMessage(String sender, String payload) {
+
   }
 
 }

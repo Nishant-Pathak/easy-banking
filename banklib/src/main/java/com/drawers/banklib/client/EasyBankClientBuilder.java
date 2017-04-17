@@ -3,10 +3,11 @@ package com.drawers.banklib.client;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 
 import com.drawers.banklib.R;
 import com.drawers.banklib.model.BaseModel;
-import com.drawers.banklib.utils.EventListener;
+import com.drawers.banklib.events.EventListener;
 import com.drawers.banklib.utils.MappingFileParser;
 
 import java.io.IOException;
@@ -17,14 +18,20 @@ import java.util.Map;
 
 public final class EasyBankClientBuilder {
 
-  private WeakReference<Context> context;
-  private WeakReference<ViewGroup> parentView;
+  private final WeakReference<Context> context;
+  private final WeakReference<ViewGroup> parentView;
+  private final WeakReference<WebView> webView;
 
-  private List<EventListener> eventListeners;
+  private final List<EventListener> eventListeners;
 
-  public EasyBankClientBuilder(@NonNull Context context, @NonNull ViewGroup viewGroup) {
+  public EasyBankClientBuilder(
+    @NonNull Context context,
+    @NonNull ViewGroup viewGroup,
+    @NonNull WebView webView
+    ) {
     this.context = new WeakReference<>(context);
     this.parentView = new WeakReference<>(viewGroup);
+    this.webView = new WeakReference<>(webView);
     eventListeners = new LinkedList<>();
   }
 
@@ -47,10 +54,14 @@ public final class EasyBankClientBuilder {
     MappingFileParser mappingFileParser =
       new MappingFileParser(context.get().getResources().openRawResource(R.raw.mapping));
     Map<String, BaseModel> models = mappingFileParser.parse();
+    if (models == null) {
+      throw new IOException("Not able to parse json file");
+    }
     return
       new EasyBankClientImpl(
         this.context.get(),
         this.parentView.get(),
+        this.webView.get(),
         eventListeners,
         models
       );
