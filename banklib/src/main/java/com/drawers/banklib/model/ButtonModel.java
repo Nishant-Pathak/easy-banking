@@ -7,6 +7,7 @@ import com.drawers.banklib.utils.BankLibHelper;
 import java.io.IOException;
 
 public class ButtonModel implements BaseModel {
+  private final String TAG = ButtonModel.class.getSimpleName();
   private final Type type;
   private final String selector;
   private final String text;
@@ -50,6 +51,11 @@ public class ButtonModel implements BaseModel {
     reader.endObject();
     BankLibHelper.requireNonNull(type, selector, text);
     return new ButtonModel(type, selector, text);
+  }
+
+  @Override
+  public String getName() {
+    return TAG + "_" + selector;
   }
 
   public enum Type {

@@ -10,6 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class PaymentChoiceModel implements BaseModel {
+  private final String TAG = PaymentChoiceModel.class.getSimpleName();
   private final List<RadioButtonModel> radioButtons;
   private final List<ButtonModel> buttons;
 
@@ -54,5 +55,10 @@ public class PaymentChoiceModel implements BaseModel {
     reader.endObject();
     BankLibHelper.requireNonNull(radioButtonModels, buttonModels);
     return new PaymentChoiceModel(radioButtonModels, buttonModels);
+  }
+
+  @Override
+  public String getName() {
+    return TAG;
   }
 }

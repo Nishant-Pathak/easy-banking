@@ -74,7 +74,7 @@ class EasyBankClientImpl extends EasyBankClient implements MessageListener {
     if (bankView != null) {
       bankView.removeFromView(parent);
     }
-    loadingView.addToView(parent);
+    loadingView.addToView(context, parent);
     // TODO: 17/4/17 iterate on all keys and check for regex match
     if (mappingModelMap.containsKey(url)) {
       currentModel = mappingModelMap.get(url);
@@ -92,7 +92,7 @@ class EasyBankClientImpl extends EasyBankClient implements MessageListener {
   public void onPageFinished(WebView view, String url) {
     loadingView.removeFromView(parent);
     if (bankView != null) {
-      bankView.addToView(parent);
+      bankView.addToView(context, parent);
     }
     // TODO: 13/4/17 inject appropriate javascript and show appropriate view
     super.onPageFinished(view, url);
