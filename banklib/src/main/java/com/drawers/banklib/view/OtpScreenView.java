@@ -13,7 +13,7 @@ import com.drawers.banklib.model.OtpModel;
 
 import java.lang.ref.WeakReference;
 
-import presenter.OtpPresenter;
+import com.drawers.banklib.presenter.OtpPresenter;
 
 /**
  * when web url matches otpScreen element

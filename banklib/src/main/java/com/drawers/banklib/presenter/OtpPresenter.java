@@ -1,4 +1,4 @@
-package presenter;
+package com.drawers.banklib.presenter;
 
 import android.support.annotation.NonNull;
 
