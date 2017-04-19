@@ -5,15 +5,16 @@ import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.provider.Telephony;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 
-import com.drawers.banklib.receiver.MessageBroadcastReceiver;
-import com.drawers.banklib.events.EventListener;
 import com.drawers.banklib.JavaScriptInterfaces;
+import com.drawers.banklib.events.EventListener;
 import com.drawers.banklib.model.BaseModel;
 import com.drawers.banklib.model.OtpModel;
 import com.drawers.banklib.model.PaymentChoiceModel;
+import com.drawers.banklib.receiver.MessageBroadcastReceiver;
 import com.drawers.banklib.view.BankView;
 import com.drawers.banklib.view.LoadingView;
 import com.drawers.banklib.view.OtpScreenView;
@@ -21,8 +22,11 @@ import com.drawers.banklib.view.PaymentChoiceView;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 final class EasyBankClientImpl extends EasyBankClient implements MessageListener {
+
+  private static final String TAG = EasyBankClientImpl.class.getSimpleName();
 
   private final Context context;
 
@@ -40,11 +44,10 @@ final class EasyBankClientImpl extends EasyBankClient implements MessageListener
 
   private BaseModel currentModel;
 
-  private String currentUrl;
-
   EasyBankClientImpl(
     @NonNull Context context,
-    WebView webView, @NonNull List<EventListener> listeners,
+    WebView webView,
+    @NonNull List<EventListener> listeners,
     @NonNull Map<String, BaseModel> mappingModelMap
   ) {
     this.context = context;
@@ -81,7 +84,6 @@ final class EasyBankClientImpl extends EasyBankClient implements MessageListener
 
   @Override
   public void onPageFinished(WebView view, String url) {
-    loadingView.removeFromView(parent);
     processPageFinished(view, url);
     super.onPageFinished(view, url);
   }
@@ -91,30 +93,29 @@ final class EasyBankClientImpl extends EasyBankClient implements MessageListener
    * 1. remove loading view.
    * 2. Search url regex in mappingModelMap, if found update currentModel and currentUrl
    * 3. show the new view, populated with given models.
+   *
    * @param view
    * @param url
    */
   private void processPageFinished(WebView view, String url) {
-    if (bankView != null) {
-      bankView.addToView(context, parent);
-    }
-    if (mappingModelMap.containsKey(url)) {
+    loadingView.removeFromView(parent);
+    if (isBankUrl(url)) {
       currentModel = mappingModelMap.get(url);
       if (currentModel instanceof OtpModel) {
         bankView = new OtpScreenView((OtpModel) currentModel, this);
-      } else if(currentModel instanceof PaymentChoiceModel) {
+      } else if (currentModel instanceof PaymentChoiceModel) {
         bankView = new PaymentChoiceView((PaymentChoiceModel) currentModel);
+      } else {
+        Log.d(TAG, String.format("%s : OtpModel not found", currentModel));
       }
-      receiver.setMappingKey(url);
+      if (bankView != null) {
+        bankView.addToView(context, parent);
+      }
     }
-
   }
 
   /**
-   * update the currentModel with the message received.
-   *
-   * @param sender
-   * @param payload
+   * {@inheritDoc}
    */
   @Override
   public void onMessageReceived(
@@ -122,7 +123,7 @@ final class EasyBankClientImpl extends EasyBankClient implements MessageListener
     @NonNull String payload
   ) {
     if (currentModel instanceof OtpModel) {
-      ((OtpModel)currentModel).updateMessage(sender, payload);
+      ((OtpModel) currentModel).updateMessage(sender, payload);
     }
   }
 
@@ -131,5 +132,15 @@ final class EasyBankClientImpl extends EasyBankClient implements MessageListener
     if (webView != null) {
       webView.loadUrl(javaScript);
     }
+  }
+
+  private boolean isBankUrl(@NonNull String currentUrl) {
+    Set<String> urls = mappingModelMap.keySet();
+    for(String url : urls) {
+      if (currentUrl.contains(url)) {
+        return true;
+      }
+    }
+    return false;
   }
 }

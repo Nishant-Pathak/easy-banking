@@ -7,7 +7,7 @@ import com.drawers.banklib.events.EventListener;
 import java.util.List;
 
 /**
- * call javascript code from java
+ * call java from javascript code
  */
 public final class JavaScriptInterfaces {
   private final List<EventListener> listeners;
