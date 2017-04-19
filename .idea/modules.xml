@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/EasyBanking.iml" filepath="$PROJECT_DIR$/EasyBanking.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/banklib/banklib.iml" filepath="$PROJECT_DIR$/banklib/banklib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/otp-reader.iml" filepath="$PROJECT_DIR$/otp-reader.iml" />
     </modules>
   </component>
 </project>
