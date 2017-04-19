@@ -1,6 +1,7 @@
 package com.drawers.banklib.model;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.JsonReader;
 import android.util.Log;
 
@@ -8,14 +9,23 @@ import com.drawers.banklib.utils.BankLibHelper;
 
 import java.io.IOException;
 import java.util.EnumMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class OtpModel implements BaseModel {
   private static final String TAG = OtpModel.class.getSimpleName();
+
   private final String otpInputSelector;
+
   private final String label;
+
   private final String otpSender;
+
   private final String otpRegex;
+
   private final long waitTime;
+
+  private final Pattern pattern;
 
   private final EnumMap<ButtonModel.Type, ButtonModel> buttons;
 
@@ -35,34 +45,7 @@ public class OtpModel implements BaseModel {
     this.otpRegex = otpRegex;
     this.waitTime = waitTime;
     this.buttons = buttons;
-  }
-
-  public String getOtpInputSelector() {
-    return otpInputSelector;
-  }
-
-  public String getLabel() {
-    return label;
-  }
-
-  public String getOtpSender() {
-    return otpSender;
-  }
-
-  public String getOtpRegex() {
-    return otpRegex;
-  }
-
-  public long getWaitTime() {
-    return waitTime;
-  }
-
-  public EnumMap<ButtonModel.Type, ButtonModel> getButtons() {
-    return buttons;
-  }
-
-  public String getOtp() {
-    return otp;
+    pattern = Pattern.compile(this.otpRegex);
   }
 
   public static BaseModel parse(JsonReader reader) throws IOException {
@@ -111,8 +94,45 @@ public class OtpModel implements BaseModel {
     return new OtpModel(otpInputSelector, label, otpSender, otpRegex, waitTime, buttonModels);
   }
 
-  public void updateMessage(String sender, String payload) {
-    // TODO: 17/4/17 extract otp and populate
+  public String getOtpInputSelector() {
+    return otpInputSelector;
+  }
+
+  public String getLabel() {
+    return label;
+  }
+
+  public String getOtpSender() {
+    return otpSender;
+  }
+
+  public String getOtpRegex() {
+    return otpRegex;
+  }
+
+  public long getWaitTime() {
+    return waitTime;
+  }
+
+  public EnumMap<ButtonModel.Type, ButtonModel> getButtons() {
+    return buttons;
+  }
+
+  public String getOtp() {
+    return otp;
+  }
+
+  public void setOtp(String otp) {
+    this.otp = otp;
+  }
+
+  public void updateMessage(@Nullable String sender, @Nullable String payload) {
+    if (sender == null || !sender.equals(otpSender) || payload == null) return;
+    Matcher matcher = pattern.matcher(payload);
+    if (matcher.find()) {
+      otp = matcher.group(1);
+      Log.d(TAG, String.format("got otp  %s ", otp));
+    }
   }
 
   @Override

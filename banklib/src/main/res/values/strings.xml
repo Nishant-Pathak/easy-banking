@@ -4,4 +4,5 @@
   <string name="cancel">cancel</string>
   <string name="ok">ok</string>
   <string name="otp_verification">OTP Verification</string>
+    <string name="bank_icon">bank icon</string>
 </resources>

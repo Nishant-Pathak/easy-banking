@@ -2,12 +2,11 @@ package com.drawers.banklib.client;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.view.ViewGroup;
 import android.webkit.WebView;
 
 import com.drawers.banklib.R;
-import com.drawers.banklib.model.BaseModel;
 import com.drawers.banklib.events.EventListener;
+import com.drawers.banklib.model.BaseModel;
 import com.drawers.banklib.utils.MappingFileParser;
 
 import java.io.IOException;
@@ -26,7 +25,7 @@ public final class EasyBankClientBuilder {
   public EasyBankClientBuilder(
     @NonNull Context context,
     @NonNull WebView webView
-    ) {
+  ) {
     this.context = new WeakReference<>(context);
     this.webView = new WeakReference<>(webView);
     eventListeners = new LinkedList<>();

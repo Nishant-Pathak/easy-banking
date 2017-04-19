@@ -12,14 +12,8 @@ public class MessageBroadcastReceiver extends BroadcastReceiver {
 
   private final MessageListener listener;
 
-  private String mappingKey;
-
   public MessageBroadcastReceiver(MessageListener listener) {
     this.listener = listener;
-  }
-
-  public void setMappingKey(String mappingKey) {
-    this.mappingKey = mappingKey;
   }
 
   @Override
