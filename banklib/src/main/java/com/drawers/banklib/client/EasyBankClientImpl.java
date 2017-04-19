@@ -24,6 +24,8 @@ import java.util.Map;
 
 final class EasyBankClientImpl extends EasyBankClient implements MessageListener {
 
+  public static final String SMS_RECEIVED_ACTION = "android.provider.Telephony.SMS_RECEIVED";
+
   private final Context context;
 
   private final MessageBroadcastReceiver receiver;
@@ -55,7 +57,7 @@ final class EasyBankClientImpl extends EasyBankClient implements MessageListener
     this.bankView = null;
     this.loadingView = new LoadingView();
     // FIXME: 13/4/17 check for compatibility
-    IntentFilter intentFilter = new IntentFilter(Telephony.Sms.Intents.SMS_RECEIVED_ACTION);
+    IntentFilter intentFilter = new IntentFilter(SMS_RECEIVED_ACTION);
     context.registerReceiver(receiver, intentFilter);
     webView.addJavascriptInterface(new JavaScriptInterfaces(listeners), JS_INTERFACE);
 
