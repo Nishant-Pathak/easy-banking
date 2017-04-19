@@ -69,16 +69,16 @@ final class EasyBankClientImpl extends EasyBankClient implements MessageListener
     context.unregisterReceiver(receiver);
     webView.removeJavascriptInterface(JS_INTERFACE);
     if (loadingView != null) {
-      loadingView.removeFromView(parent);
+      loadingView.detachFromView(parent);
     }
   }
 
   @Override
   public void onPageStarted(WebView view, String url, Bitmap favicon) {
     if (bankView != null) {
-      bankView.removeFromView(parent);
+      bankView.detachFromView(parent);
     }
-    loadingView.addToView(context, parent);
+    loadingView.attachToView(context, parent);
     super.onPageStarted(view, url, favicon);
   }
 
@@ -94,11 +94,11 @@ final class EasyBankClientImpl extends EasyBankClient implements MessageListener
    * 2. Search url regex in mappingModelMap, if found update currentModel and currentUrl
    * 3. show the new view, populated with given models.
    *
-   * @param view
-   * @param url
+   * @param view {@link WebView}
+   * @param url current page url
    */
   private void processPageFinished(WebView view, String url) {
-    loadingView.removeFromView(parent);
+    loadingView.detachFromView(parent);
     if (isBankUrl(url)) {
       currentModel = mappingModelMap.get(url);
       if (currentModel instanceof OtpModel) {
@@ -109,7 +109,7 @@ final class EasyBankClientImpl extends EasyBankClient implements MessageListener
         Log.d(TAG, String.format("%s : OtpModel not found", currentModel));
       }
       if (bankView != null) {
-        bankView.addToView(context, parent);
+        bankView.attachToView(context, parent);
       }
     }
   }
@@ -127,6 +127,9 @@ final class EasyBankClientImpl extends EasyBankClient implements MessageListener
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void loadJavaScript(@NonNull String javaScript) {
     if (webView != null) {
@@ -134,6 +137,11 @@ final class EasyBankClientImpl extends EasyBankClient implements MessageListener
     }
   }
 
+  /**
+   * Verifies if given url matches to the configured bank url
+   * @param currentUrl current page url
+   * @return true if url matches, false otherwise
+   */
   private boolean isBankUrl(@NonNull String currentUrl) {
     Set<String> urls = mappingModelMap.keySet();
     for(String url : urls) {

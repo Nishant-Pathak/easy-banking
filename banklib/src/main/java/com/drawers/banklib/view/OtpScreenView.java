@@ -32,7 +32,7 @@ public class OtpScreenView implements BankView {
   }
 
   @Override
-  public void addToView(@NonNull final Context context, @NonNull ViewGroup parent) {
+  public void attachToView(@NonNull final Context context, @NonNull ViewGroup parent) {
     //LayoutInflater LAYOUT_INFLATER_SERVICE = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     /*View view = LAYOUT_INFLATER_SERVICE.inflate(R.layout.otp_screen_dialog, null);
     Button submitButton = (Button) view.findViewById(R.id.submit_button);
@@ -84,7 +84,7 @@ public class OtpScreenView implements BankView {
   }
 
   @Override
-  public void removeFromView(@NonNull ViewGroup parent) {
+  public void detachFromView(@NonNull ViewGroup parent) {
     // TODO: 17/4/17 test it
     if (view != null) {
       parent.removeView(view.get());

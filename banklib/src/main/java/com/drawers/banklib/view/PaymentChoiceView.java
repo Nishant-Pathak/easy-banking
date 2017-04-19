@@ -17,12 +17,12 @@ public class PaymentChoiceView implements BankView {
   }
 
   @Override
-  public void addToView(@NonNull Context context, @NonNull ViewGroup parent) {
+  public void attachToView(@NonNull Context context, @NonNull ViewGroup parent) {
     // TODO: 17/4/17 implement method
   }
 
   @Override
-  public void removeFromView(@NonNull ViewGroup parent) {
+  public void detachFromView(@NonNull ViewGroup parent) {
     // TODO: 17/4/17 implement method
   }
 }
