@@ -122,6 +122,10 @@ public class OtpModel implements BaseModel {
     return otp;
   }
 
+  public void setOtp(String otp) {
+    this.otp = otp;
+  }
+
   public void updateMessage(@Nullable String sender, @Nullable String payload) {
     if (sender == null || !sender.equals(otpSender) || payload == null) return;
     Matcher matcher = pattern.matcher(payload);

@@ -33,7 +33,7 @@
           android:layout_margin="8dip"
           android:scaleType="centerInside"
           android:src="@null"
-          />
+          android:contentDescription="@string/bank_icon"/>
 
       <TextView
           android:id="@+id/alertTitle"
@@ -44,7 +44,7 @@
           android:layout_marginStart="8dp"
           android:ellipsize="end"
           android:gravity="center"
-          android:singleLine="true"
+          android:maxLines="1"
           />
     </RelativeLayout>
 
