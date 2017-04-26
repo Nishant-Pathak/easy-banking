@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 
+import android.util.Log;
 import com.drawers.banklib.JavaInterface;
 import com.drawers.banklib.R;
 import com.drawers.banklib.model.OtpModel;
@@ -156,17 +157,19 @@ public class OtpScreenView extends BankView implements
     }
 
     public void setOtp(String sender, String payload) {
-        if (sender == null || !sender.equals(mModel.getOtpSender()) || payload == null) return;
+        if (sender == null /*|| !sender.equals(mModel.getOtpSender())*/ || payload == null) return;
         Matcher matcher = mModel.getPattern().matcher(payload);
         if (matcher.find()) {
-            String otp = matcher.group(1);
+            String otp = matcher.group(0);
+            Log.d("TAG", otp);
             mApproveOtpDialog.setOtp(otp);
+            moveToState(OtpScreenState.APPROVE);
         }
     }
 
     @Override
     public void submitOtp(String otp) {
-        OtpPresenter.getOtpSubmitJavascript(mModel, otp);
+        mJavaInterface.loadJavaScript(OtpPresenter.getOtpSubmitJavascript(mModel, otp));
     }
 
     public enum OtpScreenState {

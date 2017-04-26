@@ -125,6 +125,6 @@ public class OtpModel implements BaseModel {
 
   @Override
   public String getName() {
-    return TAG + "_" + otpRegex;
+    return TAG + "_" + otpInputSelector;
   }
 }

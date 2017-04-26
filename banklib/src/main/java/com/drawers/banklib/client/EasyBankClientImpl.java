@@ -3,21 +3,19 @@ package com.drawers.banklib.client;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.webkit.WebView;
-
 import com.drawers.banklib.JavaScriptInterfaces;
 import com.drawers.banklib.events.EventListener;
 import com.drawers.banklib.model.BaseModel;
-import com.drawers.banklib.model.ButtonModel;
 import com.drawers.banklib.model.OtpModel;
 import com.drawers.banklib.model.PaymentChoiceModel;
 import com.drawers.banklib.receiver.MessageBroadcastReceiver;
 import com.drawers.banklib.view.BankView;
 import com.drawers.banklib.view.OtpScreenView;
 import com.drawers.banklib.view.PaymentChoiceView;
-
-import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -90,8 +88,10 @@ final class EasyBankClientImpl extends EasyBankClient implements MessageListener
 //    currentModel = new OtpModel("Sdsd", "OTP Received", "SDds", "Sdds", 30, buttons);
 //    bankView = new OtpScreenView((OtpModel) currentModel, this, view.getContext(), this);
 //    bankView.attachToView();
-    if (isBankUrl(url)) {
-      currentModel = mappingModelMap.get(url);
+    Log.d(TAG, url);
+    String urlKey = isBankUrl(url);
+    if (!TextUtils.isEmpty(urlKey)) {
+      currentModel = mappingModelMap.get(urlKey);
       if (currentModel instanceof OtpModel) {
         bankView = new OtpScreenView((OtpModel) currentModel, this, view.getContext(), this);
       } else if (currentModel instanceof PaymentChoiceModel) {
@@ -133,14 +133,14 @@ final class EasyBankClientImpl extends EasyBankClient implements MessageListener
    * @param currentUrl current page url
    * @return true if url matches, false otherwise
    */
-  private boolean isBankUrl(@NonNull String currentUrl) {
+  private @Nullable String isBankUrl(@NonNull String currentUrl) {
     Set<String> urls = mappingModelMap.keySet();
     for(String url : urls) {
       if (currentUrl.contains(url)) {
-        return true;
+        return url;
       }
     }
-    return false;
+    return null;
   }
 
   @Override

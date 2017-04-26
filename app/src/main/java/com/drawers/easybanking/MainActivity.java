@@ -1,16 +1,14 @@
 package com.drawers.easybanking;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.webkit.WebView;
-import android.widget.FrameLayout;
-
 import com.drawers.banklib.client.EasyBankClient;
 import com.drawers.banklib.client.EasyBankClientBuilder;
 import com.drawers.banklib.events.EventListener;
-
 import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
@@ -26,6 +24,9 @@ public class MainActivity extends AppCompatActivity {
     setContentView(R.layout.activity_main);
     webView = (WebView) findViewById(R.id.web_view);
     webView.getSettings().setJavaScriptEnabled(true);
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+      webView.setWebContentsDebuggingEnabled(true);
+    }
     try {
       easyBankClient =
         new EasyBankClientBuilder(MainActivity.this, webView)
