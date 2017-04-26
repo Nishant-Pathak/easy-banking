@@ -1,7 +1,6 @@
 package com.drawers.banklib.model;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.JsonReader;
 import android.util.Log;
 
@@ -9,7 +8,6 @@ import com.drawers.banklib.utils.BankLibHelper;
 
 import java.io.IOException;
 import java.util.EnumMap;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class OtpModel implements BaseModel {
@@ -25,11 +23,13 @@ public class OtpModel implements BaseModel {
 
   private final long waitTime;
 
+  public Pattern getPattern() {
+    return pattern;
+  }
+
   private final Pattern pattern;
 
   private final EnumMap<ButtonModel.Type, ButtonModel> buttons;
-
-  private String otp;
 
   public OtpModel(
     @NonNull String otpInputSelector,
@@ -91,6 +91,11 @@ public class OtpModel implements BaseModel {
     reader.endObject();
 
     BankLibHelper.requireNonNull(otpInputSelector, otpSender, otpRegex, buttonModels);
+    assert otpInputSelector != null;
+    assert label != null;
+    assert otpSender != null;
+    assert otpRegex != null;
+    assert buttonModels != null;
     return new OtpModel(otpInputSelector, label, otpSender, otpRegex, waitTime, buttonModels);
   }
 
@@ -116,23 +121,6 @@ public class OtpModel implements BaseModel {
 
   public EnumMap<ButtonModel.Type, ButtonModel> getButtons() {
     return buttons;
-  }
-
-  public String getOtp() {
-    return otp;
-  }
-
-  public void setOtp(String otp) {
-    this.otp = otp;
-  }
-
-  public void updateMessage(@Nullable String sender, @Nullable String payload) {
-    if (sender == null || !sender.equals(otpSender) || payload == null) return;
-    Matcher matcher = pattern.matcher(payload);
-    if (matcher.find()) {
-      otp = matcher.group(1);
-      Log.d(TAG, String.format("got otp  %s ", otp));
-    }
   }
 
   @Override

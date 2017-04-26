@@ -1,8 +1,8 @@
 [
   {
-    "URL_REGEX": {
+    "3dsecure.icicibank.com": {
       "otpScreen": {
-        "otpInputSelector": "TID1",
+        "otpInputSelector": "txtAutoOtp",
         "label": "TL1",
         "otpSender": "ICICI",
         "otpRegex": "\\d\\d\\d\\d\\d\\d",
@@ -10,12 +10,12 @@
         "buttons": [
           {
             "type": "SUBMIT",
-            "selector": "BID1",
+            "selector": "cmdSubmit",
             "text": "Submit"
           },
           {
             "type": "CANCEL",
-            "selector": "BID1",
+            "selector": "cmdSubmit",
             "text": "Cancel"
           }
 

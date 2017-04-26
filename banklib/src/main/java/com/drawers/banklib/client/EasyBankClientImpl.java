@@ -2,29 +2,27 @@ package com.drawers.banklib.client;
 
 import android.content.Context;
 import android.content.IntentFilter;
-import android.graphics.Bitmap;
-import android.provider.Telephony;
 import android.support.annotation.NonNull;
 import android.util.Log;
-import android.view.ViewGroup;
 import android.webkit.WebView;
 
 import com.drawers.banklib.JavaScriptInterfaces;
 import com.drawers.banklib.events.EventListener;
 import com.drawers.banklib.model.BaseModel;
+import com.drawers.banklib.model.ButtonModel;
 import com.drawers.banklib.model.OtpModel;
 import com.drawers.banklib.model.PaymentChoiceModel;
 import com.drawers.banklib.receiver.MessageBroadcastReceiver;
 import com.drawers.banklib.view.BankView;
-import com.drawers.banklib.view.LoadingView;
 import com.drawers.banklib.view.OtpScreenView;
 import com.drawers.banklib.view.PaymentChoiceView;
 
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-final class EasyBankClientImpl extends EasyBankClient implements MessageListener {
+final class EasyBankClientImpl extends EasyBankClient implements MessageListener, OtpScreenView.Listener {
 
   private static final String TAG = EasyBankClientImpl.class.getSimpleName();
 
@@ -34,13 +32,9 @@ final class EasyBankClientImpl extends EasyBankClient implements MessageListener
 
   private final MessageBroadcastReceiver receiver;
 
-  private final ViewGroup parent;
-
   private final WebView webView;
 
   private final Map<String, BaseModel> mappingModelMap;
-
-  private final BankView loadingView;
 
   private BankView bankView;
 
@@ -54,34 +48,21 @@ final class EasyBankClientImpl extends EasyBankClient implements MessageListener
   ) {
     this.context = context;
     this.webView = webView;
-    this.parent = (ViewGroup) webView.getParent();
     this.mappingModelMap = mappingModelMap;
     this.receiver = new MessageBroadcastReceiver(this);
     this.bankView = null;
-    this.loadingView = new LoadingView();
-    // FIXME: 13/4/17 check for compatibility
     IntentFilter intentFilter = new IntentFilter(SMS_RECEIVED_ACTION);
     context.registerReceiver(receiver, intentFilter);
     webView.addJavascriptInterface(new JavaScriptInterfaces(listeners), JS_INTERFACE);
-
   }
 
   @Override
   public void onDestroy() {
     context.unregisterReceiver(receiver);
     webView.removeJavascriptInterface(JS_INTERFACE);
-    if (loadingView != null) {
-      loadingView.detachFromView(parent);
-    }
-  }
-
-  @Override
-  public void onPageStarted(WebView view, String url, Bitmap favicon) {
     if (bankView != null) {
-      bankView.detachFromView(parent);
+      bankView.detachFromView();
     }
-    loadingView.attachToView(context, parent);
-    super.onPageStarted(view, url, favicon);
   }
 
   @Override
@@ -100,18 +81,26 @@ final class EasyBankClientImpl extends EasyBankClient implements MessageListener
    * @param url current page url
    */
   private void processPageFinished(WebView view, String url) {
-    loadingView.detachFromView(parent);
+    if (bankView != null) {
+      bankView.detachFromView();
+    }
+//    EnumMap<ButtonModel.Type, ButtonModel> buttons = new EnumMap<>(ButtonModel.Type.class);
+//    buttons.put(ButtonModel.Type.SUBMIT, new ButtonModel(ButtonModel.Type.SUBMIT, "Approve", "Approve"));
+//    buttons.put(ButtonModel.Type.CANCEL, new ButtonModel(ButtonModel.Type.CANCEL, "Cancel", "Cancel"));
+//    currentModel = new OtpModel("Sdsd", "OTP Received", "SDds", "Sdds", 30, buttons);
+//    bankView = new OtpScreenView((OtpModel) currentModel, this, view.getContext(), this);
+//    bankView.attachToView();
     if (isBankUrl(url)) {
       currentModel = mappingModelMap.get(url);
       if (currentModel instanceof OtpModel) {
-        bankView = new OtpScreenView((OtpModel) currentModel, this);
+        bankView = new OtpScreenView((OtpModel) currentModel, this, view.getContext(), this);
       } else if (currentModel instanceof PaymentChoiceModel) {
         bankView = new PaymentChoiceView((PaymentChoiceModel) currentModel);
       } else {
         Log.d(TAG, String.format("%s : OtpModel not found", currentModel));
       }
       if (bankView != null) {
-        bankView.attachToView(context, parent);
+        bankView.attachToView();
       }
     }
   }
@@ -124,8 +113,8 @@ final class EasyBankClientImpl extends EasyBankClient implements MessageListener
     @NonNull String sender,
     @NonNull String payload
   ) {
-    if (currentModel instanceof OtpModel) {
-      ((OtpModel) currentModel).updateMessage(sender, payload);
+    if (bankView instanceof OtpScreenView) {
+      ((OtpScreenView)bankView).setOtp(sender, payload);
     }
   }
 
@@ -152,5 +141,10 @@ final class EasyBankClientImpl extends EasyBankClient implements MessageListener
       }
     }
     return false;
+  }
+
+  @Override
+  public void submitOtp(String javascript) {
+    webView.loadUrl(javascript);
   }
 }

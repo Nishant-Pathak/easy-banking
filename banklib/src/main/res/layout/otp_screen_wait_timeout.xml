@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:background="@android:color/white"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <ProgressBar
+        android:layout_marginTop="@dimen/padding_3"
+        android:layout_marginBottom="@dimen/padding_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:indeterminate="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        style="@style/Base.TextAppearance.AppCompat.Medium"
+        android:layout_marginBottom="@dimen/padding_3"
+        android:text="@string/it_is_taking_too_long_you_may"/>
+
+    <LinearLayout
+        android:layout_marginBottom="@dimen/padding_4"
+        android:layout_width="match_parent"
+        android:baselineAligned="false"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/otp_screen_wait_timeout_enter_manual"
+                android:layout_width="match_parent"
+                android:background="@drawable/oval_button_background"
+                android:text="@string/enter_manually"
+                android:textColor="@android:color/white"
+                android:layout_height="wrap_content"/>
+        </FrameLayout>
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/otp_screen_wait_timeout_resend_otp"
+                android:layout_width="match_parent"
+                android:background="@drawable/oval_button_background"
+                android:text="@string/resend_otp"
+                android:textColor="@android:color/white"
+                android:layout_height="wrap_content"/>
+        </FrameLayout>
+    </LinearLayout>
+</LinearLayout>

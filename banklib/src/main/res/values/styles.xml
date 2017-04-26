@@ -14,4 +14,11 @@
   <style name="dialog_untran" parent="dialog_tran">
     <item name="android:backgroundDimEnabled">true</item>
   </style>
+
+  <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog">
+    <!-- Customize your theme here. -->
+    <item name="android:windowBackground">@null</item>
+    <item name="android:windowNoTitle">true</item>
+    <item name="android:windowIsFloating">false</item>
+  </style>
 </resources>

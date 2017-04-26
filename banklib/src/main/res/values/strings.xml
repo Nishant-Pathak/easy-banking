@@ -5,4 +5,14 @@
   <string name="ok">ok</string>
   <string name="otp_verification">OTP Verification</string>
     <string name="bank_icon">bank icon</string>
+    <string name="enter_manually">Enter Manually</string>
+  <string name="resend_otp">Resend OTP</string>
+  <string name="enter_otp">Enter OTP</string>
+  <string name="approve">Approve</string>
+  <string name="waiting_for_otp">Waiting for OTP</string>
+  <string name="it_is_taking_too_long_you_may">It is taking too long. You may...</string>
+  <string name="otp">OTP</string>
+  <string name="password">Password</string>
+  <string name="otp_received">OTP Received</string>
+    <string name="empty_otp">Empty OTP</string>
 </resources>
