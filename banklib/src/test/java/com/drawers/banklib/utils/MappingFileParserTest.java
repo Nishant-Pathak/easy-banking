@@ -1,11 +1,9 @@
 package com.drawers.banklib.utils;
 
 import com.drawers.banklib.model.BaseModel;
-
-import org.junit.Test;
-
 import java.io.InputStream;
 import java.util.Map;
+import org.junit.Test;
 
 import static org.junit.Assert.assertNotNull;
 
