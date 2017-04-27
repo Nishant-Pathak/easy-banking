@@ -1,33 +1,19 @@
 package com.drawers.banklib.model;
 
 import android.util.JsonReader;
-
 import com.drawers.banklib.utils.BankLibHelper;
-
 import java.io.IOException;
 
 public class ButtonModel implements BaseModel {
   private final String TAG = ButtonModel.class.getSimpleName();
-  private final Type type;
   private final String selector;
   private final String text;
+  private final Type type;
 
   public ButtonModel(Type type, String selector, String text) {
     this.type = type;
     this.selector = selector;
     this.text = text;
-  }
-
-  public String getSelector() {
-    return selector;
-  }
-
-  public String getText() {
-    return text;
-  }
-
-  public Type getType() {
-    return type;
   }
 
   public static ButtonModel parse(JsonReader reader) throws IOException {
@@ -50,13 +36,23 @@ public class ButtonModel implements BaseModel {
     return new ButtonModel(type, selector, text);
   }
 
-  @Override
-  public String getName() {
+  public String getSelector() {
+    return selector;
+  }
+
+  public String getText() {
+    return text;
+  }
+
+  public Type getType() {
+    return type;
+  }
+
+  @Override public String getName() {
     return TAG + "_" + selector;
   }
 
   public enum Type {
-    SUBMIT,
-    CANCEL
+    SUBMIT, CANCEL
   }
 }

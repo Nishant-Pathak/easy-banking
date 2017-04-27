@@ -3,42 +3,24 @@ package com.drawers.banklib.model;
 import android.support.annotation.NonNull;
 import android.util.JsonReader;
 import android.util.Log;
-
 import com.drawers.banklib.utils.BankLibHelper;
-
 import java.io.IOException;
 import java.util.EnumMap;
 import java.util.regex.Pattern;
 
 public class OtpModel implements BaseModel {
   private static final String TAG = OtpModel.class.getSimpleName();
-
-  private final String otpInputSelector;
-
+  private final EnumMap<ButtonModel.Type, ButtonModel> buttons;
   private final String label;
-
-  private final String otpSender;
-
+  private final String otpInputSelector;
   private final String otpRegex;
-
+  private final String otpSender;
+  private final Pattern pattern;
   private final long waitTime;
 
-  public Pattern getPattern() {
-    return pattern;
-  }
-
-  private final Pattern pattern;
-
-  private final EnumMap<ButtonModel.Type, ButtonModel> buttons;
-
-  public OtpModel(
-    @NonNull String otpInputSelector,
-    @NonNull String label,
-    @NonNull String otpSender,
-    @NonNull String otpRegex,
-    long waitTime,
-    @NonNull EnumMap<ButtonModel.Type, ButtonModel> buttons
-  ) {
+  public OtpModel(@NonNull String otpInputSelector, @NonNull String label,
+      @NonNull String otpSender, @NonNull String otpRegex, long waitTime,
+      @NonNull EnumMap<ButtonModel.Type, ButtonModel> buttons) {
     this.otpInputSelector = otpInputSelector;
     this.label = label;
     this.otpSender = otpSender;
@@ -99,6 +81,10 @@ public class OtpModel implements BaseModel {
     return new OtpModel(otpInputSelector, label, otpSender, otpRegex, waitTime, buttonModels);
   }
 
+  public Pattern getPattern() {
+    return pattern;
+  }
+
   public String getOtpInputSelector() {
     return otpInputSelector;
   }
@@ -123,8 +109,7 @@ public class OtpModel implements BaseModel {
     return buttons;
   }
 
-  @Override
-  public String getName() {
+  @Override public String getName() {
     return TAG + "_" + otpInputSelector;
   }
 }

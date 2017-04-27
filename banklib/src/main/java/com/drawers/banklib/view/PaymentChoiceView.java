@@ -13,8 +13,7 @@ public class PaymentChoiceView extends BankView {
     this.model = model;
   }
 
-  @Override
-  BaseDialog getCurrentDialog() {
+  @Override BaseDialog getCurrentDialog() {
     return null;
   }
 }

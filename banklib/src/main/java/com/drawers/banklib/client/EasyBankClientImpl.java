@@ -20,30 +20,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-final class EasyBankClientImpl extends EasyBankClient implements MessageListener, OtpScreenView.Listener {
-
-  private static final String TAG = EasyBankClientImpl.class.getSimpleName();
+final class EasyBankClientImpl extends EasyBankClient
+    implements MessageListener, OtpScreenView.Listener {
 
   public static final String SMS_RECEIVED_ACTION = "android.provider.Telephony.SMS_RECEIVED";
-
+  private static final String TAG = EasyBankClientImpl.class.getSimpleName();
   private final Context context;
-
-  private final MessageBroadcastReceiver receiver;
-
-  private final WebView webView;
-
   private final Map<String, BaseModel> mappingModelMap;
-
+  private final MessageBroadcastReceiver receiver;
+  private final WebView webView;
   private BankView bankView;
 
   private BaseModel currentModel;
 
-  EasyBankClientImpl(
-    @NonNull Context context,
-    WebView webView,
-    @NonNull List<EventListener> listeners,
-    @NonNull Map<String, BaseModel> mappingModelMap
-  ) {
+  EasyBankClientImpl(@NonNull Context context, WebView webView,
+      @NonNull List<EventListener> listeners, @NonNull Map<String, BaseModel> mappingModelMap) {
     this.context = context;
     this.webView = webView;
     this.mappingModelMap = mappingModelMap;
@@ -54,8 +45,7 @@ final class EasyBankClientImpl extends EasyBankClient implements MessageListener
     webView.addJavascriptInterface(new JavaScriptInterfaces(listeners), JS_INTERFACE);
   }
 
-  @Override
-  public void onDestroy() {
+  @Override public void onDestroy() {
     context.unregisterReceiver(receiver);
     webView.removeJavascriptInterface(JS_INTERFACE);
     if (bankView != null) {
@@ -63,8 +53,7 @@ final class EasyBankClientImpl extends EasyBankClient implements MessageListener
     }
   }
 
-  @Override
-  public void onPageFinished(WebView view, String url) {
+  @Override public void onPageFinished(WebView view, String url) {
     processPageFinished(view, url);
     super.onPageFinished(view, url);
   }
@@ -82,12 +71,6 @@ final class EasyBankClientImpl extends EasyBankClient implements MessageListener
     if (bankView != null) {
       bankView.detachFromView();
     }
-//    EnumMap<ButtonModel.Type, ButtonModel> buttons = new EnumMap<>(ButtonModel.Type.class);
-//    buttons.put(ButtonModel.Type.SUBMIT, new ButtonModel(ButtonModel.Type.SUBMIT, "Approve", "Approve"));
-//    buttons.put(ButtonModel.Type.CANCEL, new ButtonModel(ButtonModel.Type.CANCEL, "Cancel", "Cancel"));
-//    currentModel = new OtpModel("Sdsd", "OTP Received", "SDds", "Sdds", 30, buttons);
-//    bankView = new OtpScreenView((OtpModel) currentModel, this, view.getContext(), this);
-//    bankView.attachToView();
     Log.d(TAG, url);
     String urlKey = isBankUrl(url);
     if (!TextUtils.isEmpty(urlKey)) {
@@ -108,21 +91,16 @@ final class EasyBankClientImpl extends EasyBankClient implements MessageListener
   /**
    * {@inheritDoc}
    */
-  @Override
-  public void onMessageReceived(
-    @NonNull String sender,
-    @NonNull String payload
-  ) {
+  @Override public void onMessageReceived(@NonNull String sender, @NonNull String payload) {
     if (bankView instanceof OtpScreenView) {
-      ((OtpScreenView)bankView).setOtp(sender, payload);
+      ((OtpScreenView) bankView).setOtp(sender, payload);
     }
   }
 
   /**
    * {@inheritDoc}
    */
-  @Override
-  public void loadJavaScript(@NonNull String javaScript) {
+  @Override public void loadJavaScript(@NonNull String javaScript) {
     if (webView != null) {
       webView.loadUrl(javaScript);
     }
@@ -130,12 +108,13 @@ final class EasyBankClientImpl extends EasyBankClient implements MessageListener
 
   /**
    * Verifies if given url matches to the configured bank url
+   *
    * @param currentUrl current page url
    * @return true if url matches, false otherwise
    */
   private @Nullable String isBankUrl(@NonNull String currentUrl) {
     Set<String> urls = mappingModelMap.keySet();
-    for(String url : urls) {
+    for (String url : urls) {
       if (currentUrl.contains(url)) {
         return url;
       }
@@ -143,8 +122,7 @@ final class EasyBankClientImpl extends EasyBankClient implements MessageListener
     return null;
   }
 
-  @Override
-  public void submitOtp(String javascript) {
+  @Override public void submitOtp(String javascript) {
     webView.loadUrl(javascript);
   }
 }

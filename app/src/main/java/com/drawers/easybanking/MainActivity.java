@@ -14,12 +14,10 @@ import java.io.IOException;
 public class MainActivity extends AppCompatActivity {
 
   private static final String TAG = MainActivity.class.getSimpleName();
-
+  private EasyBankClient easyBankClient;
   private WebView webView;
 
-  private EasyBankClient easyBankClient;
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
+  @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     webView = (WebView) findViewById(R.id.web_view);
@@ -28,15 +26,12 @@ public class MainActivity extends AppCompatActivity {
       webView.setWebContentsDebuggingEnabled(true);
     }
     try {
-      easyBankClient =
-        new EasyBankClientBuilder(MainActivity.this, webView)
-          .addEventListener(new EventListener() {
-            @Override
-            public void onEvent(int code, @NonNull String eventName) {
+      easyBankClient = new EasyBankClientBuilder(MainActivity.this, webView).addEventListener(
+          new EventListener() {
+            @Override public void onEvent(int code, @NonNull String eventName) {
               Log.d(TAG, String.format("got Event %d as: %s", code, eventName));
             }
-          })
-          .build();
+          }).build();
     } catch (IOException e) {
       e.printStackTrace();
       finish();
@@ -46,8 +41,7 @@ public class MainActivity extends AppCompatActivity {
     webView.loadUrl("https://www.freecharge.in/");
   }
 
-  @Override
-  protected void onDestroy() {
+  @Override protected void onDestroy() {
     easyBankClient.onDestroy();
     super.onDestroy();
   }

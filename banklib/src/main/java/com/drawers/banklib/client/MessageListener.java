@@ -9,8 +9,5 @@ public interface MessageListener {
    * @param sender sender of the message
    * @param payload message
    */
-  void onMessageReceived(
-    @NonNull String sender,
-    @NonNull String payload
-  );
+  void onMessageReceived(@NonNull String sender, @NonNull String payload);
 }

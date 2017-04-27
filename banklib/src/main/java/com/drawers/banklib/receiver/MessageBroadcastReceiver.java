@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
-
 import com.drawers.banklib.client.MessageListener;
 
 public class MessageBroadcastReceiver extends BroadcastReceiver {
@@ -16,8 +15,7 @@ public class MessageBroadcastReceiver extends BroadcastReceiver {
     this.listener = listener;
   }
 
-  @Override
-  public void onReceive(Context context, Intent intent) {
+  @Override public void onReceive(Context context, Intent intent) {
     Bundle bundle = intent.getExtras();
     SmsMessage[] smsMessages = null;
 
@@ -32,7 +30,5 @@ public class MessageBroadcastReceiver extends BroadcastReceiver {
         listener.onMessageReceived(sender, message);
       }
     }
-
-
   }
 }

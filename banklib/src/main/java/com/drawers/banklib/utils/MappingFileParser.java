@@ -4,11 +4,9 @@ import android.support.annotation.Nullable;
 import android.util.JsonReader;
 import android.util.Log;
 import android.util.Pair;
-
 import com.drawers.banklib.model.BaseModel;
 import com.drawers.banklib.model.OtpModel;
 import com.drawers.banklib.model.PaymentChoiceModel;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -35,7 +33,8 @@ public class MappingFileParser {
       if (reader != null) {
         try {
           reader.close();
-        } catch (Exception ignore) {}
+        } catch (Exception ignore) {
+        }
       }
     }
     return null;
