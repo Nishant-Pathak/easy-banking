@@ -20,8 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-final class EasyBankClientImpl extends EasyBankClient
-    implements MessageListener, OtpScreenView.Listener {
+final class EasyBankClientImpl extends EasyBankClient implements MessageListener {
 
   public static final String SMS_RECEIVED_ACTION = "android.provider.Telephony.SMS_RECEIVED";
   private static final String TAG = EasyBankClientImpl.class.getSimpleName();
@@ -76,7 +75,7 @@ final class EasyBankClientImpl extends EasyBankClient
     if (!TextUtils.isEmpty(urlKey)) {
       currentModel = mappingModelMap.get(urlKey);
       if (currentModel instanceof OtpModel) {
-        bankView = new OtpScreenView((OtpModel) currentModel, this, view.getContext(), this);
+        bankView = new OtpScreenView((OtpModel) currentModel, this, view.getContext());
       } else if (currentModel instanceof PaymentChoiceModel) {
         bankView = new PaymentChoiceView((PaymentChoiceModel) currentModel);
       } else {
@@ -120,9 +119,5 @@ final class EasyBankClientImpl extends EasyBankClient
       }
     }
     return null;
-  }
-
-  @Override public void submitOtp(String javascript) {
-    webView.loadUrl(javascript);
   }
 }

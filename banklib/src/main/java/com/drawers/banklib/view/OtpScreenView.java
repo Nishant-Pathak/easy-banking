@@ -25,7 +25,6 @@ public class OtpScreenView extends BankView
   @NonNull private final ApproveOtpDialog mApproveOtpDialog;
   @NonNull private final EnterManualDialog mEnterManualDialog;
   @NonNull private final JavaInterface mJavaInterface;
-  @NonNull private final Listener mListener;
   @NonNull private final LoadingScreenDialog mLoadingScreenDialog;
   @NonNull private final LoadingScreenDialogTimedOut mLoadingScreenDialogTimedOut;
   @NonNull private final OtpModel mModel;
@@ -34,7 +33,7 @@ public class OtpScreenView extends BankView
   @NonNull private CountDownTimer mCountDownTimer;
 
   public OtpScreenView(@NonNull final OtpModel model, @NonNull final JavaInterface javaInterface,
-      @NonNull final Context context, @NonNull Listener listener) {
+      @NonNull final Context context) {
     mModel = model;
     mJavaInterface = javaInterface;
     mApproveOtpDialog = new ApproveOtpDialog(context, R.style.DialogTheme, this);
@@ -42,7 +41,6 @@ public class OtpScreenView extends BankView
     mLoadingScreenDialogTimedOut =
         new LoadingScreenDialogTimedOut(context, R.style.DialogTheme, this);
     mEnterManualDialog = new EnterManualDialog(context, R.style.DialogTheme, this);
-    mListener = listener;
     mBaseDialog = mLoadingScreenDialog;
     currentScreenState = OtpScreenState.LOADING;
     mCountDownTimer = new CountDownTimer(30000, 1000) {
@@ -159,9 +157,5 @@ public class OtpScreenView extends BankView
 
   public enum OtpScreenState {
     LOADING, LOADING_TIMEOUT, ENTER_MANUAL, APPROVE
-  }
-
-  public interface Listener {
-    void submitOtp(String javascript);
   }
 }
