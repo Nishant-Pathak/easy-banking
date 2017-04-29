@@ -1,19 +1,26 @@
 package com.drawers.banklib.view;
 
+import com.drawers.banklib.BuildConfig;
 import com.drawers.banklib.JavaInterface;
-import com.drawers.banklib.base.BaseTest;
 import com.drawers.banklib.model.OtpModel;
 import java.util.regex.Pattern;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.RuntimeEnvironment;
+import org.robolectric.annotation.Config;
 
 import static org.mockito.Mockito.when;
 
-
-public class OtpScreenViewTest extends BaseTest {
+@RunWith(RobolectricGradleTestRunner.class)
+@Config(
+    constants = BuildConfig.class,
+    sdk = 21
+)
+public class OtpScreenViewTest {
 
   @Mock JavaInterface javaInterface;
   @Mock OtpModel otpModel;
