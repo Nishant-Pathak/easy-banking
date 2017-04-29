@@ -15,7 +15,10 @@ import org.robolectric.annotation.Config;
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
+@Config(
+    constants = BuildConfig.class,
+    sdk = 21
+)
 public class MainActivityTest {
 
   MainActivity mainActivity;
