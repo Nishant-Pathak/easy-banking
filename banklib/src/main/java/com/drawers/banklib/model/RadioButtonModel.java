@@ -1,9 +1,7 @@
 package com.drawers.banklib.model;
 
 import android.util.JsonReader;
-
 import com.drawers.banklib.utils.BankLibHelper;
-
 import java.io.IOException;
 
 class RadioButtonModel implements BaseModel {
@@ -14,14 +12,6 @@ class RadioButtonModel implements BaseModel {
   private RadioButtonModel(String selector, String text) {
     this.selector = selector;
     this.text = text;
-  }
-
-  public String getSelector() {
-    return selector;
-  }
-
-  public String getText() {
-    return text;
   }
 
   public static RadioButtonModel parse(JsonReader reader) throws IOException {
@@ -41,8 +31,15 @@ class RadioButtonModel implements BaseModel {
     return new RadioButtonModel(selector, text);
   }
 
-  @Override
-  public String getName() {
+  public String getSelector() {
+    return selector;
+  }
+
+  public String getText() {
+    return text;
+  }
+
+  @Override public String getName() {
     return TAG;
   }
 }

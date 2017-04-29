@@ -1,8 +1,8 @@
 [
   {
-    "URL_REGEX": {
+    "3dsecure.icicibank.com/ACSWeb/EnrollWeb/ICICIBank/server/OtpServer": {
       "otpScreen": {
-        "otpInputSelector": "TID1",
+        "otpInputSelector": "txtAutoOtp",
         "label": "TL1",
         "otpSender": "ICICI",
         "otpRegex": "\\d\\d\\d\\d\\d\\d",
@@ -10,15 +10,66 @@
         "buttons": [
           {
             "type": "SUBMIT",
-            "selector": "BID1",
+            "selector": "cmdSubmit",
             "text": "Submit"
           },
           {
             "type": "CANCEL",
-            "selector": "BID1",
+            "selector": "cmdSubmit",
             "text": "Cancel"
           }
 
+        ]
+      }
+    }
+  },
+  {
+    "3dsecure.icicibank.com/ACSWeb/EnrollWeb/ICICIBank/auth/VBV.jsp": {
+      "otpScreen": {
+        "otpInputSelector": "txtAutoOtp",
+        "label": "TL1",
+        "otpSender": "ICICI",
+        "otpRegex": "\\d\\d\\d\\d\\d\\d",
+        "waitTime": 30000,
+        "buttons": [
+          {
+            "type": "SUBMIT",
+            "selector": "cmdSubmit",
+            "text": "Submit"
+          },
+          {
+            "type": "CANCEL",
+            "selector": "cmdSubmit",
+            "text": "Cancel"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "netsafe.hdfcbank.com/ACSWeb/jsp/dynamicAuth.jsp?transType=payerAuth": {
+      "otpScreen": {
+        "otpInputSelector": "txtOtpPassword",
+        "label": "TL1",
+        "otpSender": "VM-HDFCBK",
+        "otpRegex": "\\d\\d\\d\\d\\d\\d",
+        "waitTime": 30000,
+        "buttons": [
+          {
+            "type": "SUBMIT",
+            "selector": "cmdSubmit",
+            "text": "Submit"
+          },
+          {
+            "type": "CANCEL",
+            "selector": "cmdSubmit",
+            "text": "Cancel"
+          },
+          {
+            "type": "RESEND_OTP",
+            "selector": "otpBtnReGen",
+            "text": "RESEND OTP"
+          }
         ]
       }
     }

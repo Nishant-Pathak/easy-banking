@@ -17,8 +17,12 @@
             "type": "CANCEL",
             "selector": "BID1",
             "text": "Cancel"
+          },
+          {
+            "type": "RESEND_OTP",
+            "selector": "otpBtnReGen",
+            "text": "RESEND OTP"
           }
-
         ]
       }
     }

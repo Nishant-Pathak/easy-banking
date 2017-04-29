@@ -1,44 +1,26 @@
 package com.drawers.banklib.model;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.JsonReader;
 import android.util.Log;
-
 import com.drawers.banklib.utils.BankLibHelper;
-
 import java.io.IOException;
 import java.util.EnumMap;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class OtpModel implements BaseModel {
   private static final String TAG = OtpModel.class.getSimpleName();
-
-  private final String otpInputSelector;
-
+  private final EnumMap<ButtonModel.Type, ButtonModel> buttons;
   private final String label;
-
-  private final String otpSender;
-
+  private final String otpInputSelector;
   private final String otpRegex;
-
+  private final String otpSender;
+  private final Pattern pattern;
   private final long waitTime;
 
-  private final Pattern pattern;
-
-  private final EnumMap<ButtonModel.Type, ButtonModel> buttons;
-
-  private String otp;
-
-  public OtpModel(
-    @NonNull String otpInputSelector,
-    @NonNull String label,
-    @NonNull String otpSender,
-    @NonNull String otpRegex,
-    long waitTime,
-    @NonNull EnumMap<ButtonModel.Type, ButtonModel> buttons
-  ) {
+  public OtpModel(@NonNull String otpInputSelector, @NonNull String label,
+      @NonNull String otpSender, @NonNull String otpRegex, long waitTime,
+      @NonNull EnumMap<ButtonModel.Type, ButtonModel> buttons) {
     this.otpInputSelector = otpInputSelector;
     this.label = label;
     this.otpSender = otpSender;
@@ -91,7 +73,16 @@ public class OtpModel implements BaseModel {
     reader.endObject();
 
     BankLibHelper.requireNonNull(otpInputSelector, otpSender, otpRegex, buttonModels);
+    assert otpInputSelector != null;
+    assert label != null;
+    assert otpSender != null;
+    assert otpRegex != null;
+    assert buttonModels != null;
     return new OtpModel(otpInputSelector, label, otpSender, otpRegex, waitTime, buttonModels);
+  }
+
+  public Pattern getPattern() {
+    return pattern;
   }
 
   public String getOtpInputSelector() {
@@ -118,25 +109,7 @@ public class OtpModel implements BaseModel {
     return buttons;
   }
 
-  public String getOtp() {
-    return otp;
-  }
-
-  public void setOtp(String otp) {
-    this.otp = otp;
-  }
-
-  public void updateMessage(@Nullable String sender, @Nullable String payload) {
-    if (sender == null || !sender.equals(otpSender) || payload == null) return;
-    Matcher matcher = pattern.matcher(payload);
-    if (matcher.find()) {
-      otp = matcher.group(1);
-      Log.d(TAG, String.format("got otp  %s ", otp));
-    }
-  }
-
-  @Override
-  public String getName() {
-    return TAG + "_" + otpRegex;
+  @Override public String getName() {
+    return TAG + "_" + otpInputSelector;
   }
 }

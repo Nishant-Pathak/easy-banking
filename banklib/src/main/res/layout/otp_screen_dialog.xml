@@ -37,6 +37,7 @@
 
       <TextView
           android:id="@+id/alertTitle"
+          android:textSize="24dp"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_centerInParent="true"
@@ -52,24 +53,21 @@
         android:id="@+id/message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
         android:text="@string/otp_verification"
         android:textSize="16sp"
+        android:visibility="gone"
         />
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
-      <LinearLayout
-          android:id="@+id/llOTP"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:orientation="horizontal"
-          android:gravity="center_horizontal"
-          />
-
-    </ScrollView>
+    <EditText
+      android:id="@+id/otpEnterField"
+      android:layout_marginLeft="24dp"
+      android:layout_marginRight="24dp"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -84,7 +82,7 @@
           android:layout_margin="8dp"
           android:layout_weight="1"
           android:text="@string/cancel"
-          android:visibility="gone"
+          android:visibility="visible"
           style="?android:attr/buttonBarButtonStyle"
           />
 
@@ -95,7 +93,7 @@
           android:layout_margin="8dp"
           android:layout_weight="1"
           android:text="@string/ok"
-          android:visibility="gone"
+          android:visibility="visible"
           style="?android:attr/buttonBarButtonStyle"
           />
 

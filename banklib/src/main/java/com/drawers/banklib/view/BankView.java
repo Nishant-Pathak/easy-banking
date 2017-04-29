@@ -1,20 +1,21 @@
 package com.drawers.banklib.view;
 
-import android.content.Context;
-import android.support.annotation.NonNull;
-import android.view.ViewGroup;
+import com.drawers.banklib.otpdialog.BaseDialog;
 
-public interface BankView {
+public abstract class BankView {
   /**
    * add custom bank view to the patent
-   * @param context {@link Context}
-   * @param parent {@link ViewGroup}
    */
-  void attachToView(@NonNull Context context, @NonNull ViewGroup parent);
+  public void attachToView() {
+    getCurrentDialog().show();
+  }
 
   /**
    * detach view from the parent view group
-   * @param parent {@link ViewGroup}
    */
-  void detachFromView(@NonNull ViewGroup parent);
+  public void detachFromView() {
+    getCurrentDialog().dismiss();
+  }
+
+  abstract BaseDialog getCurrentDialog();
 }

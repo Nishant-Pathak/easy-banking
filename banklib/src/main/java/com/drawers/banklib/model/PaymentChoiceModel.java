@@ -2,9 +2,7 @@ package com.drawers.banklib.model;
 
 import android.support.annotation.NonNull;
 import android.util.JsonReader;
-
 import com.drawers.banklib.utils.BankLibHelper;
-
 import java.io.IOException;
 import java.util.EnumMap;
 import java.util.LinkedList;
@@ -12,23 +10,13 @@ import java.util.List;
 
 public class PaymentChoiceModel implements BaseModel {
   private final String TAG = PaymentChoiceModel.class.getSimpleName();
-  private final List<RadioButtonModel> radioButtons;
   private final EnumMap<ButtonModel.Type, ButtonModel> buttons;
+  private final List<RadioButtonModel> radioButtons;
 
-  public PaymentChoiceModel(
-    @NonNull List<RadioButtonModel> radioButtons,
-    @NonNull EnumMap<ButtonModel.Type, ButtonModel> buttons
-  ) {
+  public PaymentChoiceModel(@NonNull List<RadioButtonModel> radioButtons,
+      @NonNull EnumMap<ButtonModel.Type, ButtonModel> buttons) {
     this.radioButtons = radioButtons;
     this.buttons = buttons;
-  }
-
-  public List<RadioButtonModel> getRadioButtons() {
-    return radioButtons;
-  }
-
-  public EnumMap<ButtonModel.Type, ButtonModel> getButtons() {
-    return buttons;
   }
 
   public static BaseModel parse(JsonReader reader) throws IOException {
@@ -59,8 +47,15 @@ public class PaymentChoiceModel implements BaseModel {
     return new PaymentChoiceModel(radioButtonModels, buttonModels);
   }
 
-  @Override
-  public String getName() {
+  public List<RadioButtonModel> getRadioButtons() {
+    return radioButtons;
+  }
+
+  public EnumMap<ButtonModel.Type, ButtonModel> getButtons() {
+    return buttons;
+  }
+
+  @Override public String getName() {
     return TAG;
   }
 }
