@@ -56,6 +56,7 @@ public class ButtonModel implements BaseModel {
     SUBMIT,
     CANCEL,
     RESEND_OTP1,
-    RESEND_OTP2
+    RESEND_OTP2,
+    RESEND_OTP
   }
 }
