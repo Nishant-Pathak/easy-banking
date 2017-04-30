@@ -55,7 +55,6 @@ public class ButtonModel implements BaseModel {
   public enum Type {
     SUBMIT,
     CANCEL,
-    RESEND_OTP1,
-    RESEND_OTP2
+    RESEND_OTP
   }
 }
