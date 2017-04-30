@@ -1,10 +1,13 @@
 package com.drawers.easybanking;
 
 import android.webkit.WebView;
+import com.drawers.banklib.client.EasyBankClient;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Matchers;
+import org.mockito.Mockito;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
@@ -29,8 +32,9 @@ public class MainActivityTest {
   }
 
   @Test
-  public void viewSetupCorrectly() throws Exception {
+  public void viewsSetupCorrectly() throws Exception {
     WebView webView = (WebView) mainActivity.findViewById(R.id.web_view);
     Assert.assertNotNull(webView);
+    Assert.assertEquals(true, webView.getSettings().getJavaScriptEnabled());
   }
 }

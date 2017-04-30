@@ -3,104 +3,113 @@ package com.drawers.banklib.view;
 import android.content.Context;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import com.drawers.banklib.JavaInterface;
-import com.drawers.banklib.R;
 import com.drawers.banklib.model.OtpModel;
 import com.drawers.banklib.otpdialog.ApproveOtpDialog;
 import com.drawers.banklib.otpdialog.BaseDialog;
 import com.drawers.banklib.otpdialog.EnterManualDialog;
 import com.drawers.banklib.otpdialog.LoadingScreenDialog;
 import com.drawers.banklib.otpdialog.LoadingScreenDialogTimedOut;
-import com.drawers.banklib.presenter.OtpPresenter;
+import com.drawers.banklib.presenter.JavascriptInjectionModels;
 import java.util.regex.Matcher;
+
+import static android.util.Log.d;
+import static com.drawers.banklib.R.style.DialogTheme;
+import static com.drawers.banklib.otpdialog.LoadingScreenDialog.Listener;
+import static com.drawers.banklib.presenter.JavascriptInjectionModels.getOtpSubmitJavascript;
+import static com.drawers.banklib.view.OtpScreenView.OtpScreenState.APPROVE;
+import static com.drawers.banklib.view.OtpScreenView.OtpScreenState.ENTER_MANUAL;
+import static com.drawers.banklib.view.OtpScreenView.OtpScreenState.LOADING;
+import static com.drawers.banklib.view.OtpScreenView.OtpScreenState.LOADING_TIMEOUT;
+import static java.lang.String.format;
 
 /**
  * when web url matches otpScreen element
  */
-public class OtpScreenView extends BankView
-    implements LoadingScreenDialog.Listener, LoadingScreenDialogTimedOut.Listener,
-    ApproveOtpDialog.Listener, EnterManualDialog.Listener {
+public class OtpScreenView implements
+    BankView,
+    Listener,
+    LoadingScreenDialogTimedOut.Listener,
+    ApproveOtpDialog.Listener,
+    EnterManualDialog.Listener {
 
-  @NonNull private final ApproveOtpDialog mApproveOtpDialog;
-  @NonNull private final EnterManualDialog mEnterManualDialog;
-  @NonNull private final JavaInterface mJavaInterface;
-  @NonNull private final LoadingScreenDialog mLoadingScreenDialog;
-  @NonNull private final LoadingScreenDialogTimedOut mLoadingScreenDialogTimedOut;
-  @NonNull private final OtpModel mModel;
+  @NonNull private final ApproveOtpDialog approveOtpDialog;
+  @NonNull private BaseDialog baseDialog;
   @NonNull private OtpScreenState currentScreenState;
-  @NonNull private BaseDialog mBaseDialog;
-  @NonNull private CountDownTimer mCountDownTimer;
+  @NonNull private final EnterManualDialog enterManualDialog;
+  @NonNull private final JavaInterface javaInterface;
+  @NonNull private final LoadingScreenDialog loadingScreenDialog;
+  @NonNull private final LoadingScreenDialogTimedOut loadingScreenDialogTimedOut;
+  @NonNull private CountDownTimer countDownTimer;
+  @NonNull private final OtpModel otpModel;
 
-  public OtpScreenView(@NonNull final OtpModel model, @NonNull final JavaInterface javaInterface,
-      @NonNull final Context context) {
-    mModel = model;
-    mJavaInterface = javaInterface;
-    mApproveOtpDialog = new ApproveOtpDialog(context, R.style.DialogTheme, this);
-    mLoadingScreenDialog = new LoadingScreenDialog(context, R.style.DialogTheme, this);
-    mLoadingScreenDialogTimedOut =
-        new LoadingScreenDialogTimedOut(context, R.style.DialogTheme, this);
-    mEnterManualDialog = new EnterManualDialog(context, R.style.DialogTheme, this);
-    mBaseDialog = mLoadingScreenDialog;
-    currentScreenState = OtpScreenState.LOADING;
-    mCountDownTimer = new CountDownTimer(30000, 1000) {
+  public OtpScreenView(
+      @NonNull Context context,
+      @NonNull final OtpModel otpModel,
+      @NonNull final JavaInterface javaInterface) {
+
+    this.otpModel = otpModel;
+    this.javaInterface = javaInterface;
+
+    approveOtpDialog = new ApproveOtpDialog(context, DialogTheme, this);
+    loadingScreenDialog = new LoadingScreenDialog(context, DialogTheme, this);
+    loadingScreenDialogTimedOut =
+        new LoadingScreenDialogTimedOut(context, DialogTheme, this);
+    enterManualDialog = new EnterManualDialog(context, DialogTheme, this);
+    countDownTimer = new CountDownTimer(30000, 1000) {
       @Override public void onTick(long l) {
-        mLoadingScreenDialog.tick(l);
+        loadingScreenDialog.tick(l);
       }
 
       @Override public void onFinish() {
         moveToTimedOutState();
       }
     };
+
+    baseDialog = loadingScreenDialog;
+    currentScreenState = LOADING;
   }
 
   private void moveToTimedOutState() {
     switch (currentScreenState) {
       case LOADING:
-        moveToState(OtpScreenState.LOADING_TIMEOUT);
+        moveToState(LOADING_TIMEOUT);
         break;
       default:
         throw new RuntimeException(
-            String.format("Incorrect state for timeout %1s", currentScreenState));
+            format("Incorrect state for timeout %1s", currentScreenState));
     }
   }
 
-  @Override @NonNull BaseDialog getCurrentDialog() {
-    return mBaseDialog;
-  }
-
   private void moveToState(OtpScreenState otpScreenState) {
-    mBaseDialog.dismiss();
+    baseDialog.detach();
     moveToNextState(otpScreenState);
-    mBaseDialog.show();
+    baseDialog.attach();
   }
 
   @Override public void attachToView() {
-    super.attachToView();
-    mCountDownTimer.start();
+    baseDialog.attach();
   }
 
   @Override public void detachFromView() {
-    mCountDownTimer.cancel();
-    super.detachFromView();
+    baseDialog.detach();
   }
 
   private void moveToNextState(OtpScreenState nextState) {
     switch (currentScreenState) {
       case LOADING:
-        mCountDownTimer.cancel();
         switch (nextState) {
           case ENTER_MANUAL:
-            mBaseDialog = mEnterManualDialog;
-            currentScreenState = OtpScreenState.ENTER_MANUAL;
+            baseDialog = enterManualDialog;
+            currentScreenState = ENTER_MANUAL;
             break;
           case LOADING_TIMEOUT:
-            mBaseDialog = mLoadingScreenDialogTimedOut;
-            currentScreenState = OtpScreenState.LOADING_TIMEOUT;
+            baseDialog = loadingScreenDialogTimedOut;
+            currentScreenState = LOADING_TIMEOUT;
             break;
           case APPROVE:
-            mBaseDialog = mApproveOtpDialog;
-            currentScreenState = OtpScreenState.APPROVE;
+            baseDialog = approveOtpDialog;
+            currentScreenState = APPROVE;
             break;
           default:
             throwIncorrectStateTransition(nextState);
@@ -109,16 +118,27 @@ public class OtpScreenView extends BankView
       case LOADING_TIMEOUT:
         switch (nextState) {
           case ENTER_MANUAL:
-            mBaseDialog = mEnterManualDialog;
-            currentScreenState = OtpScreenState.ENTER_MANUAL;
+            baseDialog = enterManualDialog;
+            currentScreenState = ENTER_MANUAL;
             break;
           case LOADING:
-            mBaseDialog = mLoadingScreenDialog;
-            currentScreenState = OtpScreenState.LOADING;
-            mCountDownTimer.start();
+            baseDialog = loadingScreenDialog;
+            currentScreenState = LOADING;
+            break;
+          case APPROVE:
+            baseDialog = approveOtpDialog;
+            currentScreenState = APPROVE;
             break;
           default:
             throwIncorrectStateTransition(nextState);
+        }
+        break;
+      case ENTER_MANUAL:
+        switch (nextState) {
+          case APPROVE:
+            baseDialog = approveOtpDialog;
+            currentScreenState = APPROVE;
+            break;
         }
         break;
       default:
@@ -128,32 +148,45 @@ public class OtpScreenView extends BankView
 
   private void throwIncorrectStateTransition(OtpScreenState nextScreenState) {
     throw new RuntimeException(
-        String.format("Incorrect state transition from %1s to %2s", currentScreenState,
+        format("Incorrect state transition from %1s to %2s", currentScreenState,
             nextScreenState));
   }
 
   @Override public void enterManually() {
-    moveToState(OtpScreenState.ENTER_MANUAL);
+    moveToState(ENTER_MANUAL);
+  }
+
+  @Override public void startTimer() {
+    countDownTimer.start();
+  }
+
+  @Override public void stopTimer() {
+    countDownTimer.cancel();
   }
 
   @Override public void resendOtpForLoadingScreen() {
-    mJavaInterface.loadJavaScript(OtpPresenter.getResendOtpJavascript(mModel));
+    javaInterface.loadJavaScript(JavascriptInjectionModels.getResendOtpJavascript(otpModel));
     moveToState(OtpScreenState.LOADING);
+    moveToState(LOADING);
   }
 
   public void setOtp(String sender, String payload) {
-    if (sender == null /*|| !sender.equals(mModel.getOtpSender())*/ || payload == null) return;
-    Matcher matcher = mModel.getPattern().matcher(payload);
+    if (currentScreenState == OtpScreenState.APPROVE) {
+      return;
+    }
+    if (sender == null /*|| !sender.equals(otpModel.getOtpSender())*/ || payload == null) return;
+    Matcher matcher = otpModel.getPattern().matcher(payload);
     if (matcher.find()) {
       String otp = matcher.group(0);
-      Log.d("TAG", otp);
-      mApproveOtpDialog.setOtp(otp);
-      moveToState(OtpScreenState.APPROVE);
+      d("TAG", otp);
+      approveOtpDialog.setOtp(otp);
+      moveToState(APPROVE);
     }
   }
 
   @Override public void submitOtp(String otp) {
-    mJavaInterface.loadJavaScript(OtpPresenter.getOtpSubmitJavascript(mModel, otp));
+    baseDialog.detach();
+    javaInterface.loadJavaScript(getOtpSubmitJavascript(otpModel, otp));
   }
 
   public enum OtpScreenState {

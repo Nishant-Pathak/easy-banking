@@ -34,7 +34,7 @@ public class OtpScreenViewTest {
 
   @Test
   public void setOtp() throws Exception {
-    OtpScreenView otpScreenView = new OtpScreenView(otpModel, javaInterface, RuntimeEnvironment.application);
+    OtpScreenView otpScreenView = new OtpScreenView(RuntimeEnvironment.application, otpModel, javaInterface);
     otpScreenView.setOtp("XYZ", "this is india 123456 what about 12 3.");
   }
 }

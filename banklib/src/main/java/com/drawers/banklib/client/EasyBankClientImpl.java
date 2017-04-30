@@ -75,9 +75,9 @@ final class EasyBankClientImpl extends EasyBankClient implements MessageListener
     if (!TextUtils.isEmpty(urlKey)) {
       currentModel = mappingModelMap.get(urlKey);
       if (currentModel instanceof OtpModel) {
-        bankView = new OtpScreenView((OtpModel) currentModel, this, view.getContext());
+        bankView = new OtpScreenView(view.getContext(), (OtpModel) currentModel, this);
       } else if (currentModel instanceof PaymentChoiceModel) {
-        bankView = new PaymentChoiceView((PaymentChoiceModel) currentModel);
+        bankView = new PaymentChoiceView((PaymentChoiceModel) currentModel, view.getContext(), this);
       } else {
         Log.d(TAG, String.format("%s : OtpModel not found", currentModel));
       }

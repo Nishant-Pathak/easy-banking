@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
     webView = (WebView) findViewById(R.id.web_view);
     webView.getSettings().setJavaScriptEnabled(true);
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-      webView.setWebContentsDebuggingEnabled(true);
+      WebView.setWebContentsDebuggingEnabled(true);
     }
     try {
       easyBankClient = new EasyBankClientBuilder(MainActivity.this, webView).addEventListener(

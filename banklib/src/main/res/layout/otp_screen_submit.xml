@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@android:color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+  <ProgressBar
+      android:layout_marginTop="@dimen/padding_3"
+      android:layout_marginBottom="@dimen/padding_2"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center_horizontal"
+      android:indeterminate="true"/>
+
+  <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center_horizontal"
+      style="@style/Base.TextAppearance.AppCompat.Medium"
+      android:text="@string/verifying_otp"
+      android:layout_marginBottom="@dimen/padding_3"/>
+
+
+  <LinearLayout
+      android:layout_marginBottom="@dimen/padding_4"
+      android:layout_width="match_parent"
+      android:orientation="horizontal"
+      android:layout_height="wrap_content">
+    <View
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"/>
+    <Button
+        android:id="@+id/otp_screen_submit_button"
+        android:layout_width="0dp"
+        android:layout_weight="4"
+        android:background="@drawable/oval_button_background"
+        android:text="@string/dismiss"
+        android:textColor="@android:color/white"
+        android:layout_height="wrap_content"/>
+    <View
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"/>
+  </LinearLayout>
+
+</LinearLayout>

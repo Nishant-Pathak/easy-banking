@@ -11,14 +11,14 @@ import com.drawers.banklib.R;
 
 public class EnterManualDialog extends BaseDialog {
 
-  @NonNull private final Listener mListener;
+  @NonNull private final Listener listener;
 
   private EditText otpEntryField;
 
   public EnterManualDialog(@NonNull Context context, @StyleRes int themeResId,
       @NonNull Listener listener) {
     super(context, themeResId);
-    mListener = listener;
+    this.listener = listener;
   }
 
   @Override View inflateDialogView(Context context) {
@@ -34,7 +34,7 @@ public class EnterManualDialog extends BaseDialog {
           otpEntryField.setError(getContext().getString(R.string.empty_otp));
           return;
         }
-        mListener.submitOtp(otpEntryField.getText().toString());
+        listener.submitOtp(otpEntryField.getText().toString());
       }
     });
   }

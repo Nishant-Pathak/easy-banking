@@ -11,14 +11,14 @@ import com.drawers.banklib.R;
 
 public class ApproveOtpDialog extends BaseDialog {
 
-  @NonNull private final Listener mListener;
+  @NonNull private final Listener listener;
   private EditText otpScreenEntryField;
   private Button otpSubmitButton;
 
   public ApproveOtpDialog(@NonNull Context context, @StyleRes int themeResId,
       @NonNull Listener listener) {
     super(context, themeResId);
-    mListener = listener;
+    this.listener = listener;
   }
 
   @Override View inflateDialogView(Context context) {
@@ -34,7 +34,7 @@ public class ApproveOtpDialog extends BaseDialog {
           otpScreenEntryField.setError(getContext().getString(R.string.empty_otp));
           return;
         }
-        mListener.submitOtp(otpScreenEntryField.getText().toString());
+        listener.submitOtp(otpScreenEntryField.getText().toString());
       }
     });
   }

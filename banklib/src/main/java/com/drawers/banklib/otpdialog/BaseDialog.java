@@ -14,7 +14,7 @@ import android.view.WindowManager;
 
 public abstract class BaseDialog extends Dialog implements DialogInterface {
 
-  private View mDialogView;
+  private View view;
 
   public BaseDialog(@NonNull Context context, @StyleRes int themeResId) {
     super(context, themeResId);
@@ -32,9 +32,9 @@ public abstract class BaseDialog extends Dialog implements DialogInterface {
   }
 
   private void init(final Context context) {
-    mDialogView = inflateDialogView(context);
+    view = inflateDialogView(context);
     extractElements();
-    setContentView(mDialogView);
+    setContentView(view);
   }
 
   /**
@@ -47,6 +47,13 @@ public abstract class BaseDialog extends Dialog implements DialogInterface {
 
   abstract void extractElements();
 
+  public void attach() {
+    show();
+  }
+
+  public void detach() {
+    dismiss();
+  }
   /**
    * Provides smart casting to extract views.
    *
@@ -55,6 +62,6 @@ public abstract class BaseDialog extends Dialog implements DialogInterface {
    * @return the extracted view.
    */
   @SuppressWarnings("unchecked") public <T> T extractView(@IdRes int identifier) {
-    return (T) mDialogView.findViewById(identifier);
+    return (T) view.findViewById(identifier);
   }
 }
