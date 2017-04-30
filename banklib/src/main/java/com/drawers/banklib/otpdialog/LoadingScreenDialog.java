@@ -10,13 +10,13 @@ import com.drawers.banklib.R;
 
 public class LoadingScreenDialog extends BaseDialog {
 
-  @NonNull private Listener mListener;
+  @NonNull private Listener listener;
   private TextView timerView;
 
   public LoadingScreenDialog(@NonNull Context context, @StyleRes int themeResId,
       @NonNull Listener listener) {
     super(context, themeResId);
-    mListener = listener;
+    this.listener = listener;
   }
 
   @Override View inflateDialogView(Context context) {
@@ -28,9 +28,19 @@ public class LoadingScreenDialog extends BaseDialog {
     Button enterManualButton = extractView(R.id.otp_screen_wait_enter_manual);
     enterManualButton.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View view) {
-        mListener.enterManually();
+        listener.enterManually();
       }
     });
+  }
+
+  @Override public void attach() {
+    super.attach();
+    listener.startTimer();
+  }
+
+  @Override public void detach() {
+    listener.stopTimer();
+    super.detach();
   }
 
   public void tick(long l) {
@@ -39,5 +49,7 @@ public class LoadingScreenDialog extends BaseDialog {
 
   public interface Listener {
     void enterManually();
+    void startTimer();
+    void stopTimer();
   }
 }

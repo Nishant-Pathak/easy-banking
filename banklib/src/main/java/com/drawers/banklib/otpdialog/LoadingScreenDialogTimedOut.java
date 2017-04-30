@@ -9,12 +9,12 @@ import com.drawers.banklib.R;
 
 public class LoadingScreenDialogTimedOut extends BaseDialog {
 
-  @NonNull private final Listener mListener;
+  @NonNull private final Listener listener;
 
   public LoadingScreenDialogTimedOut(@NonNull Context context, @StyleRes int themeResId,
       @NonNull Listener listener) {
     super(context, themeResId);
-    mListener = listener;
+    this.listener = listener;
   }
 
   @Override View inflateDialogView(Context context) {
@@ -25,13 +25,13 @@ public class LoadingScreenDialogTimedOut extends BaseDialog {
     Button resendOtpButton = extractView(R.id.otp_screen_wait_timeout_resend_otp);
     resendOtpButton.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View view) {
-        mListener.resendOtpForLoadingScreen();
+        listener.resendOtpForLoadingScreen();
       }
     });
     Button enterManualButton = extractView(R.id.otp_screen_wait_timeout_enter_manual);
     enterManualButton.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View view) {
-        mListener.enterManually();
+        listener.enterManually();
       }
     });
   }

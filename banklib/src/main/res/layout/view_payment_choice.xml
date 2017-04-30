@@ -9,6 +9,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1">
         <Button
+            android:id="@+id/generate_otp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/round_button_background"
@@ -22,6 +23,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1">
         <Button
+            android:id="@+id/password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/round_button_background"
