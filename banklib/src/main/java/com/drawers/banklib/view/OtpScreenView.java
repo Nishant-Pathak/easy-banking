@@ -137,7 +137,6 @@ public class OtpScreenView extends BankView
   }
 
   @Override public void resendOtpForLoadingScreen() {
-    mJavaInterface.loadJavaScript(OtpPresenter.getResendOtpJavascript(mModel));
     moveToState(OtpScreenState.LOADING);
   }
 

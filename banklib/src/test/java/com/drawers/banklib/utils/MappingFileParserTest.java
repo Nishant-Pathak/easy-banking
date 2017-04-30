@@ -1,21 +1,11 @@
 package com.drawers.banklib.utils;
 
-import com.drawers.banklib.BuildConfig;
 import com.drawers.banklib.model.BaseModel;
 import java.io.InputStream;
 import java.util.Map;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.annotation.Config;
 
 import static org.junit.Assert.assertNotNull;
-
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(
-    constants = BuildConfig.class,
-    sdk = 21
-)
 
 public class MappingFileParserTest {
 
