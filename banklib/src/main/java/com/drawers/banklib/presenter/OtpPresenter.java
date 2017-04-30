@@ -18,6 +18,17 @@ public class OtpPresenter {
         + "').click();", "submit_" + otpModel.getName());
   }
 
+  public static String getResendOtpJavascript(@NonNull OtpModel otpModel) {
+    return String.format(JAVASCRIPT_FUNCTION_TEMPLATE,
+        (otpModel.getButtons().containsKey(ButtonModel.Type.RESEND_OTP1)?
+        "document.getElementById('" + otpModel.getButtons().get(ButtonModel.Type.SUBMIT).getSelector() + "').click();": "")
+        +
+            (otpModel.getButtons().containsKey(ButtonModel.Type.RESEND_OTP2)?
+            "document.getElementById('" + otpModel.getButtons().get(ButtonModel.Type.SUBMIT).getSelector() + "').click();": ""),
+        "submit_" + otpModel.getName());
+  }
+
+
   public static String getOtpCancel(@NonNull OtpModel otpModel) {
     return String.format(JAVASCRIPT_FUNCTION_TEMPLATE,
         "document.getElementById('" + otpModel.getButtons()
