@@ -8,6 +8,7 @@ import android.util.Log;
 import android.webkit.WebView;
 import com.drawers.banklib.client.EasyBankClient;
 import com.drawers.banklib.client.EasyBankClientBuilder;
+import com.drawers.banklib.events.EventCode;
 import com.drawers.banklib.events.EventListener;
 import java.io.IOException;
 
@@ -28,8 +29,8 @@ public class MainActivity extends AppCompatActivity {
     try {
       easyBankClient = new EasyBankClientBuilder(MainActivity.this, webView)
           .addEventListener(new EventListener() {
-            @Override public void onEvent(int code, @NonNull String eventName) {
-              Log.d(TAG, String.format("got Event %d as: %s", code, eventName));
+            @Override public void onEvent(@NonNull EventCode code, @NonNull String eventName) {
+              Log.d(TAG, String.format("got Event %s as: %s", code, eventName));
             }
           }).build();
     } catch (IOException e) {

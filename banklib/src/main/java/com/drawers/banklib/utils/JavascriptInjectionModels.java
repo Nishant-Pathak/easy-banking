@@ -1,10 +1,9 @@
-package com.drawers.banklib.presenter;
+package com.drawers.banklib.utils;
 
 import android.support.annotation.NonNull;
 import com.drawers.banklib.model.ButtonModel;
 import com.drawers.banklib.model.OtpBaseModel;
 import com.drawers.banklib.model.OtpModel;
-import com.drawers.banklib.model.PaymentChoiceModel;
 
 import static com.drawers.banklib.utils.BankLibHelper.JAVASCRIPT_FUNCTION_TEMPLATE;
 

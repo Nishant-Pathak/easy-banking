@@ -12,13 +12,13 @@ import com.drawers.banklib.otpdialog.EnterManualDialog;
 import com.drawers.banklib.otpdialog.LoadingScreenDialog;
 import com.drawers.banklib.otpdialog.LoadingScreenDialogTimedOut;
 import com.drawers.banklib.otpdialog.SubmitDialog;
-import com.drawers.banklib.presenter.JavascriptInjectionModels;
+import com.drawers.banklib.utils.JavascriptInjectionModels;
 import java.util.regex.Matcher;
 
 import static android.util.Log.d;
 import static com.drawers.banklib.R.style.DialogTheme;
 import static com.drawers.banklib.otpdialog.LoadingScreenDialog.Listener;
-import static com.drawers.banklib.presenter.JavascriptInjectionModels.getOtpSubmitJavascript;
+import static com.drawers.banklib.utils.JavascriptInjectionModels.getOtpSubmitJavascript;
 import static com.drawers.banklib.view.OtpScreenRouter.OtpScreenState.APPROVE;
 import static com.drawers.banklib.view.OtpScreenRouter.OtpScreenState.ENTER_MANUAL;
 import static com.drawers.banklib.view.OtpScreenRouter.OtpScreenState.LOADING;

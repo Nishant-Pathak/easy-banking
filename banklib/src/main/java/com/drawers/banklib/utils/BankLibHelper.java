@@ -1,6 +1,7 @@
 package com.drawers.banklib.utils;
 
 import com.drawers.banklib.client.EasyBankClient;
+import com.drawers.banklib.events.EventCode;
 
 public class BankLibHelper {
 
@@ -9,12 +10,12 @@ public class BankLibHelper {
       + "           %s"
       + "           window."
       + EasyBankClient.JS_INTERFACE
-      + ".logEvent(0, '%s');\n"
+      + ".logEvent(" + EventCode.SUCCESS + ", '%s');\n"
       + "        }\n"
       + "        catch(err) {\n"
       + "           window."
       + EasyBankClient.JS_INTERFACE
-      + ".logEvent(1, 'err');\n"
+      + ".logEvent(" + EventCode.FAILURE + ", 'err');\n"
       + "        }\n"
       + "      })();";
 
