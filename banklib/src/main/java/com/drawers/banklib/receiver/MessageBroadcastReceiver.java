@@ -9,10 +9,17 @@ import com.drawers.banklib.client.MessageListener;
 
 public class MessageBroadcastReceiver extends BroadcastReceiver {
 
-  private final MessageListener listener;
+  private MessageListener messageListener;
 
-  public MessageBroadcastReceiver(MessageListener listener) {
-    this.listener = listener;
+  public MessageBroadcastReceiver() {
+  }
+
+  public void attach(MessageListener messageListener) {
+    this.messageListener = messageListener;
+  }
+
+  public void detach() {
+    this.messageListener = null;
   }
 
   @Override public void onReceive(Context context, Intent intent) {
@@ -27,7 +34,9 @@ public class MessageBroadcastReceiver extends BroadcastReceiver {
         smsMessages[i] = SmsMessage.createFromPdu((byte[]) pdus[i]);
         String sender = smsMessages[i].getOriginatingAddress();
         String message = smsMessages[i].getMessageBody();
-        listener.onMessageReceived(sender, message);
+        if (messageListener != null) {
+          messageListener.onMessageReceived(sender, message);
+        }
       }
     }
   }

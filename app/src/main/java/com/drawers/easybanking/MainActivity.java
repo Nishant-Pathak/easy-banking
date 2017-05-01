@@ -26,8 +26,8 @@ public class MainActivity extends AppCompatActivity {
       WebView.setWebContentsDebuggingEnabled(true);
     }
     try {
-      easyBankClient = new EasyBankClientBuilder(MainActivity.this, webView).addEventListener(
-          new EventListener() {
+      easyBankClient = new EasyBankClientBuilder(MainActivity.this, webView)
+          .addEventListener(new EventListener() {
             @Override public void onEvent(int code, @NonNull String eventName) {
               Log.d(TAG, String.format("got Event %d as: %s", code, eventName));
             }
