@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.EnumMap;
 import java.util.regex.Pattern;
 
-public class OtpModel implements BaseModel {
+public class OtpModel implements OtpBaseModel {
   private static final String TAG = OtpModel.class.getSimpleName();
   private final EnumMap<ButtonModel.Type, ButtonModel> buttons;
   private final String label;

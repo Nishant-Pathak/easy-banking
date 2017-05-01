@@ -2,13 +2,14 @@ package com.drawers.banklib.presenter;
 
 import android.support.annotation.NonNull;
 import com.drawers.banklib.model.ButtonModel;
+import com.drawers.banklib.model.OtpBaseModel;
 import com.drawers.banklib.model.OtpModel;
 import com.drawers.banklib.model.PaymentChoiceModel;
 
 import static com.drawers.banklib.utils.BankLibHelper.JAVASCRIPT_FUNCTION_TEMPLATE;
 
 public class JavascriptInjectionModels {
-  public static String getOtpSubmitJavascript(@NonNull OtpModel otpModel, @NonNull String otp) {
+  public static String getOtpSubmitJavascript(@NonNull OtpBaseModel otpModel, @NonNull String otp) {
     return String.format(JAVASCRIPT_FUNCTION_TEMPLATE, "document.getElementById('"
         + otpModel.getOtpInputSelector()
         + "').value = '"

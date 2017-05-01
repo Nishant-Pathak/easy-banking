@@ -10,11 +10,13 @@ import android.webkit.WebView;
 import com.drawers.banklib.JavaScriptInterfaces;
 import com.drawers.banklib.model.BaseModel;
 import com.drawers.banklib.model.OtpModel;
+import com.drawers.banklib.model.PasswordModel;
 import com.drawers.banklib.model.PaymentChoiceModel;
 import com.drawers.banklib.receiver.MessageBroadcastReceiver;
 import com.drawers.banklib.utils.BankLibConstants;
 import com.drawers.banklib.view.BankRouter;
 import com.drawers.banklib.view.OtpScreenRouter;
+import com.drawers.banklib.view.PasswordScreenRouter;
 import com.drawers.banklib.view.PaymentChoiceRouter;
 import java.util.Map;
 import java.util.Set;
@@ -77,6 +79,8 @@ final class EasyBankClientImpl extends EasyBankClient implements MessageListener
         bankRouter = new OtpScreenRouter(view.getContext(), (OtpModel) currentModel, this);
       } else if (currentModel instanceof PaymentChoiceModel) {
         bankRouter = new PaymentChoiceRouter((PaymentChoiceModel) currentModel, view.getContext(), this);
+      } else if (currentModel instanceof PasswordModel) {
+        bankRouter = new PasswordScreenRouter(view.getContext(), this, (PasswordModel) currentModel);
       } else {
         Log.d(TAG, String.format("%s : OtpModel not found", currentModel));
       }
