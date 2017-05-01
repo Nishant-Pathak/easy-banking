@@ -1,13 +1,10 @@
 package com.drawers.easybanking;
 
 import android.webkit.WebView;
-import com.drawers.banklib.client.EasyBankClient;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Matchers;
-import org.mockito.Mockito;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
