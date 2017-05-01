@@ -7,10 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.webkit.WebView;
 import com.drawers.banklib.client.EasyBankClient;
-import com.drawers.banklib.client.EasyBankClientBuilder;
+import com.drawers.banklib.client.EasyBankBuilder;
 import com.drawers.banklib.events.EventCode;
 import com.drawers.banklib.events.EventListener;
-import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,18 +25,12 @@ public class MainActivity extends AppCompatActivity {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
       WebView.setWebContentsDebuggingEnabled(true);
     }
-    try {
-      easyBankClient = new EasyBankClientBuilder(MainActivity.this, webView)
-          .addEventListener(new EventListener() {
-            @Override public void onEvent(@NonNull EventCode code, @NonNull String eventName) {
-              Log.d(TAG, String.format("got Event %s as: %s", code, eventName));
-            }
-          }).build();
-    } catch (IOException e) {
-      e.printStackTrace();
-      finish();
-      return;
-    }
+    easyBankClient = new EasyBankBuilder()
+        .addEventListener(new EventListener() {
+          @Override public void onEvent(@NonNull EventCode code, @NonNull String eventName) {
+            Log.d(TAG, String.format("got Event %s as: %s", code, eventName));
+          }
+        }).build(MainActivity.this, webView);
     webView.setWebViewClient(easyBankClient);
     webView.loadUrl("https://www.freecharge.in/");
   }
