@@ -26,7 +26,7 @@ Step 2. Add the dependency
 
 ```groovy
 	dependencies {
-	  compile 'com.github.Nishant-Pathak:easy-banking:-SNAPSHOT'
+	  compile 'com.github.Nishant-Pathak:easy-banking:master-SNAPSHOT'
 	}
 ```
 
