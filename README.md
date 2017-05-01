@@ -1,16 +1,38 @@
 [![codecov](https://codecov.io/gh/Nishant-Pathak/easy-banking/branch/master/graph/badge.svg?token=NbT8hfH5Ne)](https://codecov.io/gh/Nishant-Pathak/easy-banking)
 [![Build Status](https://travis-ci.com/Nishant-Pathak/easy-banking.svg?token=q1vsdcsZMnoymmkNjFyi&branch=master)](https://travis-ci.com/Nishant-Pathak/easy-banking)
-
+[![](https://jitpack.io/v/Nishant-Pathak/easy-banking.svg)](https://jitpack.io/#Nishant-Pathak/easy-banking)
 About
 =====
+
+
 
 INSTALLATION
 ============
 
-Using jit pack
+To get a Git project into your build:
+
+Step 1. Add the JitPack repository to your build file. Add it in your root build.gradle at the end of repositories:
+```groovy
+	allprojects {
+		repositories {
+			...
+			maven { url 'https://jitpack.io' }
+		}
+	}
+```
+
+Step 2. Add the dependency
+
+```groovy
+	dependencies {
+	  compile 'com.github.Nishant-Pathak:easy-banking:-SNAPSHOT'
+	}
+```
 
 USAGE
 =====
+
+Add this to your activity (say MainActivity.java) which contains webview for payment flow.
 
 ```java
   private EasyBankClient easyBankClient;
