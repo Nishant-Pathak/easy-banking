@@ -3,10 +3,8 @@
     "URL_REGEX": {
       "otpScreen": {
         "otpInputSelector": "TID1",
-        "label": "TL1",
         "otpSender": "ICICI",
         "otpRegex": "\\d\\d\\d\\d\\d\\d",
-        "waitTime": 30000,
         "buttons": [
           {
             "type": "SUBMIT",

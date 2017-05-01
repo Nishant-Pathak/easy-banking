@@ -11,31 +11,28 @@ import java.util.regex.Pattern;
 public class OtpModel implements OtpBaseModel {
   private static final String TAG = OtpModel.class.getSimpleName();
   private final EnumMap<ButtonModel.Type, ButtonModel> buttons;
-  private final String label;
   private final String otpInputSelector;
   private final String otpRegex;
   private final String otpSender;
   private final Pattern pattern;
-  private final long waitTime;
 
-  public OtpModel(@NonNull String otpInputSelector, @NonNull String label,
-      @NonNull String otpSender, @NonNull String otpRegex, long waitTime,
-      @NonNull EnumMap<ButtonModel.Type, ButtonModel> buttons) {
+  public OtpModel(
+      @NonNull String otpInputSelector,
+      @NonNull String otpSender,
+      @NonNull String otpRegex,
+      @NonNull EnumMap<ButtonModel.Type, ButtonModel> buttons
+  ) {
     this.otpInputSelector = otpInputSelector;
-    this.label = label;
     this.otpSender = otpSender;
     this.otpRegex = otpRegex;
-    this.waitTime = waitTime;
     this.buttons = buttons;
     pattern = Pattern.compile(this.otpRegex);
   }
 
   public static BaseModel parse(JsonReader reader) throws IOException {
     String otpInputSelector = null;
-    String label = null;
     String otpSender = null;
     String otpRegex = null;
-    long waitTime = 0;
     EnumMap<ButtonModel.Type, ButtonModel> buttonModels = null;
     reader.beginObject();
     while (reader.hasNext()) {
@@ -44,17 +41,11 @@ public class OtpModel implements OtpBaseModel {
         case "otpInputSelector":
           otpInputSelector = reader.nextString();
           break;
-        case "label":
-          label = reader.nextString();
-          break;
         case "otpSender":
           otpSender = reader.nextString();
           break;
         case "otpRegex":
           otpRegex = reader.nextString();
-          break;
-        case "waitTime":
-          waitTime = reader.nextLong();
           break;
         case "buttons":
           reader.beginArray();
@@ -74,11 +65,10 @@ public class OtpModel implements OtpBaseModel {
 
     BankLibHelper.requireNonNull(otpInputSelector, otpSender, otpRegex, buttonModels);
     assert otpInputSelector != null;
-    assert label != null;
     assert otpSender != null;
     assert otpRegex != null;
     assert buttonModels != null;
-    return new OtpModel(otpInputSelector, label, otpSender, otpRegex, waitTime, buttonModels);
+    return new OtpModel(otpInputSelector, otpSender, otpRegex, buttonModels);
   }
 
   public Pattern getPattern() {
@@ -89,20 +79,12 @@ public class OtpModel implements OtpBaseModel {
     return otpInputSelector;
   }
 
-  public String getLabel() {
-    return label;
-  }
-
   public String getOtpSender() {
     return otpSender;
   }
 
   public String getOtpRegex() {
     return otpRegex;
-  }
-
-  public long getWaitTime() {
-    return waitTime;
   }
 
   public EnumMap<ButtonModel.Type, ButtonModel> getButtons() {
