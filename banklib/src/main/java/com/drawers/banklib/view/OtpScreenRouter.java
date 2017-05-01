@@ -3,6 +3,7 @@ package com.drawers.banklib.view;
 import android.content.Context;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
+import android.support.annotation.VisibleForTesting;
 import com.drawers.banklib.JavaInterface;
 import com.drawers.banklib.model.OtpModel;
 import com.drawers.banklib.otpdialog.ApproveOtpDialog;
@@ -10,6 +11,7 @@ import com.drawers.banklib.otpdialog.BaseDialog;
 import com.drawers.banklib.otpdialog.EnterManualDialog;
 import com.drawers.banklib.otpdialog.LoadingScreenDialog;
 import com.drawers.banklib.otpdialog.LoadingScreenDialogTimedOut;
+import com.drawers.banklib.otpdialog.SubmitDialog;
 import com.drawers.banklib.presenter.JavascriptInjectionModels;
 import java.util.regex.Matcher;
 
@@ -17,17 +19,17 @@ import static android.util.Log.d;
 import static com.drawers.banklib.R.style.DialogTheme;
 import static com.drawers.banklib.otpdialog.LoadingScreenDialog.Listener;
 import static com.drawers.banklib.presenter.JavascriptInjectionModels.getOtpSubmitJavascript;
-import static com.drawers.banklib.view.OtpScreenView.OtpScreenState.APPROVE;
-import static com.drawers.banklib.view.OtpScreenView.OtpScreenState.ENTER_MANUAL;
-import static com.drawers.banklib.view.OtpScreenView.OtpScreenState.LOADING;
-import static com.drawers.banklib.view.OtpScreenView.OtpScreenState.LOADING_TIMEOUT;
+import static com.drawers.banklib.view.OtpScreenRouter.OtpScreenState.APPROVE;
+import static com.drawers.banklib.view.OtpScreenRouter.OtpScreenState.ENTER_MANUAL;
+import static com.drawers.banklib.view.OtpScreenRouter.OtpScreenState.LOADING;
+import static com.drawers.banklib.view.OtpScreenRouter.OtpScreenState.LOADING_TIMEOUT;
+import static com.drawers.banklib.view.OtpScreenRouter.OtpScreenState.SUBMIT;
 import static java.lang.String.format;
 
 /**
  * when web url matches otpScreen element
  */
-public class OtpScreenView implements
-    BankView,
+public class OtpScreenRouter implements BankRouter,
     Listener,
     LoadingScreenDialogTimedOut.Listener,
     ApproveOtpDialog.Listener,
@@ -40,10 +42,11 @@ public class OtpScreenView implements
   @NonNull private final JavaInterface javaInterface;
   @NonNull private final LoadingScreenDialog loadingScreenDialog;
   @NonNull private final LoadingScreenDialogTimedOut loadingScreenDialogTimedOut;
+  @NonNull private final SubmitDialog submitDialog;
   @NonNull private CountDownTimer countDownTimer;
   @NonNull private final OtpModel otpModel;
 
-  public OtpScreenView(
+  public OtpScreenRouter(
       @NonNull Context context,
       @NonNull final OtpModel otpModel,
       @NonNull final JavaInterface javaInterface) {
@@ -56,6 +59,7 @@ public class OtpScreenView implements
     loadingScreenDialogTimedOut =
         new LoadingScreenDialogTimedOut(context, DialogTheme, this);
     enterManualDialog = new EnterManualDialog(context, DialogTheme, this);
+    submitDialog = new SubmitDialog(context, DialogTheme);
     countDownTimer = new CountDownTimer(30000, 1000) {
       @Override public void onTick(long l) {
         loadingScreenDialog.tick(l);
@@ -141,6 +145,23 @@ public class OtpScreenView implements
             break;
         }
         break;
+      case APPROVE:
+        switch (nextState) {
+          case SUBMIT:
+            baseDialog = submitDialog;
+            currentScreenState = SUBMIT;
+            break;
+          default:
+            throwIncorrectStateTransition(nextState);
+        }
+        break;
+      case SUBMIT:
+        switch (nextState) {
+          case APPROVE:
+            break;
+          default:
+            throwIncorrectStateTransition(nextState);
+        }
       default:
         throwIncorrectStateTransition(nextState);
     }
@@ -166,14 +187,10 @@ public class OtpScreenView implements
 
   @Override public void resendOtpForLoadingScreen() {
     javaInterface.loadJavaScript(JavascriptInjectionModels.getResendOtpJavascript(otpModel));
-    moveToState(OtpScreenState.LOADING);
     moveToState(LOADING);
   }
 
   public void setOtp(String sender, String payload) {
-    if (currentScreenState == OtpScreenState.APPROVE) {
-      return;
-    }
     if (sender == null /*|| !sender.equals(otpModel.getOtpSender())*/ || payload == null) return;
     Matcher matcher = otpModel.getPattern().matcher(payload);
     if (matcher.find()) {
@@ -185,11 +202,15 @@ public class OtpScreenView implements
   }
 
   @Override public void submitOtp(String otp) {
-    baseDialog.detach();
     javaInterface.loadJavaScript(getOtpSubmitJavascript(otpModel, otp));
+    moveToState(SUBMIT);
   }
 
-  public enum OtpScreenState {
-    LOADING, LOADING_TIMEOUT, ENTER_MANUAL, APPROVE
+  enum OtpScreenState {
+    LOADING, LOADING_TIMEOUT, ENTER_MANUAL, APPROVE, SUBMIT
+  }
+
+  @VisibleForTesting OtpScreenState getCurrentState() {
+    return currentScreenState;
   }
 }

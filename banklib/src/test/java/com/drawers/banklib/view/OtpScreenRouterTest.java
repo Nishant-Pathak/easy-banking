@@ -5,6 +5,7 @@ import com.drawers.banklib.JavaInterface;
 import com.drawers.banklib.base.BankLibTestRunner;
 import com.drawers.banklib.model.OtpModel;
 import java.util.regex.Pattern;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,21 +18,28 @@ import static org.mockito.Mockito.when;
 
 @RunWith(BankLibTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21 )
-public class OtpScreenViewTest {
+public class OtpScreenRouterTest {
 
   @Mock JavaInterface javaInterface;
   @Mock OtpModel otpModel;
 
+  private OtpScreenRouter otpScreenRouter;
   @Before
   public void setup() {
     MockitoAnnotations.initMocks(this);
     when(otpModel.getPattern()).thenReturn(Pattern.compile("\\d\\d\\d\\d\\d\\d"));
     when(otpModel.getOtpSender()).thenReturn("XYZ");
+    otpScreenRouter = new OtpScreenRouter(RuntimeEnvironment.application, otpModel, javaInterface);
   }
 
   @Test
-  public void setOtp() throws Exception {
-    OtpScreenView otpScreenView = new OtpScreenView(RuntimeEnvironment.application, otpModel, javaInterface);
-    otpScreenView.setOtp("XYZ", "this is india 123456 what about 12 3.");
+  public void setOtp_moveToStateApprove() {
+    otpScreenRouter.setOtp("XYZ", "this is india 123456 what about 12 3.");
+    Assert.assertEquals(OtpScreenRouter.OtpScreenState.APPROVE, otpScreenRouter.getCurrentState());
+  }
+
+  @Test
+  public void initialise_moveToStateLoading() {
+    Assert.assertEquals(OtpScreenRouter.OtpScreenState.LOADING, otpScreenRouter.getCurrentState());
   }
 }

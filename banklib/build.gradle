@@ -14,12 +14,6 @@ android {
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
   }
-//  sourceSets {
-//    androidTest.setRoot('src/test')
-//    androidTest {
-//      java.srcDirs = ['src/test/java']
-//    }
-//  }
   testOptions {
     unitTests.returnDefaultValues = true
   }

@@ -1,8 +1,6 @@
 package com.drawers.banklib.view;
 
-import com.drawers.banklib.otpdialog.BaseDialog;
-
-public interface BankView {
+public interface BankRouter {
   /**
    * add custom bank view to the patent
    */

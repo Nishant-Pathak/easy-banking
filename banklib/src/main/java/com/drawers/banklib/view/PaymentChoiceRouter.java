@@ -10,12 +10,12 @@ import com.drawers.banklib.otpdialog.PaymentChoiceDialog;
 /**
  * when web url matches paymentChoiceScreen element
  */
-public class PaymentChoiceView implements BankView {
+public class PaymentChoiceRouter implements BankRouter {
   private final PaymentChoiceModel model;
   private final PaymentChoiceDialog paymentChoiceDialog;
   @NonNull private final JavaInterface javaInterface;
 
-  public PaymentChoiceView(PaymentChoiceModel model, Context context, @NonNull
+  public PaymentChoiceRouter(PaymentChoiceModel model, Context context, @NonNull
   final JavaInterface javaInterface) {
     this.model = model;
     this.paymentChoiceDialog = new PaymentChoiceDialog(context, R.style.DialogTheme);

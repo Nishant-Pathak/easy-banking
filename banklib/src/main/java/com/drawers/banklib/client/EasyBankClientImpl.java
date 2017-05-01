@@ -13,9 +13,9 @@ import com.drawers.banklib.model.BaseModel;
 import com.drawers.banklib.model.OtpModel;
 import com.drawers.banklib.model.PaymentChoiceModel;
 import com.drawers.banklib.receiver.MessageBroadcastReceiver;
-import com.drawers.banklib.view.BankView;
-import com.drawers.banklib.view.OtpScreenView;
-import com.drawers.banklib.view.PaymentChoiceView;
+import com.drawers.banklib.view.BankRouter;
+import com.drawers.banklib.view.OtpScreenRouter;
+import com.drawers.banklib.view.PaymentChoiceRouter;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -28,7 +28,7 @@ final class EasyBankClientImpl extends EasyBankClient implements MessageListener
   private final Map<String, BaseModel> mappingModelMap;
   private final MessageBroadcastReceiver receiver;
   private final WebView webView;
-  private BankView bankView;
+  private BankRouter bankRouter;
 
   private BaseModel currentModel;
 
@@ -38,7 +38,7 @@ final class EasyBankClientImpl extends EasyBankClient implements MessageListener
     this.webView = webView;
     this.mappingModelMap = mappingModelMap;
     this.receiver = new MessageBroadcastReceiver(this);
-    this.bankView = null;
+    this.bankRouter = null;
     IntentFilter intentFilter = new IntentFilter(SMS_RECEIVED_ACTION);
     context.registerReceiver(receiver, intentFilter);
     webView.addJavascriptInterface(new JavaScriptInterfaces(listeners), JS_INTERFACE);
@@ -47,8 +47,8 @@ final class EasyBankClientImpl extends EasyBankClient implements MessageListener
   @Override public void onDestroy() {
     context.unregisterReceiver(receiver);
     webView.removeJavascriptInterface(JS_INTERFACE);
-    if (bankView != null) {
-      bankView.detachFromView();
+    if (bankRouter != null) {
+      bankRouter.detachFromView();
     }
   }
 
@@ -67,22 +67,22 @@ final class EasyBankClientImpl extends EasyBankClient implements MessageListener
    * @param url current page url
    */
   private void processPageFinished(WebView view, String url) {
-    if (bankView != null) {
-      bankView.detachFromView();
+    if (bankRouter != null) {
+      bankRouter.detachFromView();
     }
     Log.d(TAG, url);
     String urlKey = isBankUrl(url);
     if (!TextUtils.isEmpty(urlKey)) {
       currentModel = mappingModelMap.get(urlKey);
       if (currentModel instanceof OtpModel) {
-        bankView = new OtpScreenView(view.getContext(), (OtpModel) currentModel, this);
+        bankRouter = new OtpScreenRouter(view.getContext(), (OtpModel) currentModel, this);
       } else if (currentModel instanceof PaymentChoiceModel) {
-        bankView = new PaymentChoiceView((PaymentChoiceModel) currentModel, view.getContext(), this);
+        bankRouter = new PaymentChoiceRouter((PaymentChoiceModel) currentModel, view.getContext(), this);
       } else {
         Log.d(TAG, String.format("%s : OtpModel not found", currentModel));
       }
-      if (bankView != null) {
-        bankView.attachToView();
+      if (bankRouter != null) {
+        bankRouter.attachToView();
       }
     }
   }
@@ -91,8 +91,8 @@ final class EasyBankClientImpl extends EasyBankClient implements MessageListener
    * {@inheritDoc}
    */
   @Override public void onMessageReceived(@NonNull String sender, @NonNull String payload) {
-    if (bankView instanceof OtpScreenView) {
-      ((OtpScreenView) bankView).setOtp(sender, payload);
+    if (bankRouter instanceof OtpScreenRouter) {
+      ((OtpScreenRouter) bankRouter).setOtp(sender, payload);
     }
   }
 
