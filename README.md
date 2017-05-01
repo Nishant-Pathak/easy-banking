@@ -1,8 +1,37 @@
 [![codecov](https://codecov.io/gh/Nishant-Pathak/easy-banking/branch/master/graph/badge.svg?token=NbT8hfH5Ne)](https://codecov.io/gh/Nishant-Pathak/easy-banking)
 [![Build Status](https://travis-ci.com/Nishant-Pathak/easy-banking.svg?token=q1vsdcsZMnoymmkNjFyi&branch=master)](https://travis-ci.com/Nishant-Pathak/easy-banking)
 
+About
+=====
 
-It is OTP auto read for banks.
+INSTALLATION
+============
+
+Using jit pack
+
+USAGE
+=====
+
+```java
+  private EasyBankClient easyBankClient;
+
+  @Override protected void onCreate(Bundle savedInstanceState) {
+      ...
+    easyBankClient = new EasyBankBuilder()
+        .addEventListener(new EventListener() {
+            @Override public void onEvent(@NonNull EventCode code, @NonNull String eventName) {
+              Log.d(TAG, String.format("got Event %s as: %s", code, eventName));
+            }
+        }).build(MainActivity.this, webView);
+        ...
+  }
+  
+  @Override protected void onDestroy() {
+    easyBankClient.onDestroy();
+    ...
+  }
+
+```
 
 License
 =======
