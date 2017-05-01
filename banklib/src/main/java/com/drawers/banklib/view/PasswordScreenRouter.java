@@ -5,9 +5,9 @@ import android.support.annotation.NonNull;
 import com.drawers.banklib.JavaInterface;
 import com.drawers.banklib.model.PasswordModel;
 import com.drawers.banklib.otpdialog.EnterManualDialog;
+import com.drawers.banklib.utils.JavascriptInjectionModels;
 
 import static com.drawers.banklib.R.style.DialogTheme;
-import static com.drawers.banklib.presenter.JavascriptInjectionModels.getOtpSubmitJavascript;
 
 public class PasswordScreenRouter implements BankRouter, EnterManualDialog.Listener {
 
@@ -18,7 +18,8 @@ public class PasswordScreenRouter implements BankRouter, EnterManualDialog.Liste
   public PasswordScreenRouter(
       @NonNull Context context,
       @NonNull JavaInterface javaInterface,
-      @NonNull PasswordModel passwordModel) {
+      @NonNull PasswordModel passwordModel
+  ) {
     this.enterManualDialog = new EnterManualDialog(context, DialogTheme, this);
     this.javaInterface = javaInterface;
     this.passwordModel = passwordModel;
@@ -33,6 +34,8 @@ public class PasswordScreenRouter implements BankRouter, EnterManualDialog.Liste
   }
 
   @Override public void submitOtp(String otp) {
-    javaInterface.loadJavaScript(getOtpSubmitJavascript(passwordModel, otp));
+    javaInterface.loadJavaScript(
+        JavascriptInjectionModels.getOtpSubmitJavascript(passwordModel, otp)
+    );
   }
 }
