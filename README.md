@@ -7,6 +7,10 @@ About
 Webview based OTP autoread for different banks. It uses javascript injection to parse the dom. 
 It currently supports `HDFC` and `ICICI` bank.
 
+![Demo](https://github.com/Nishant-Pathak/easy-banking/blob/master/demo.gif)
+
+
+
 ## NOTE
 
 We are not actively maintaining it. We worked on this a long time ago and open sourcing it so that others continue/benefit from the work.
