@@ -6,18 +6,18 @@ import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
 import com.drawers.banklib.JavaInterface;
 import com.drawers.banklib.model.OtpModel;
-import com.drawers.banklib.otpdialog.ApproveOtpDialog;
-import com.drawers.banklib.otpdialog.BaseDialog;
-import com.drawers.banklib.otpdialog.EnterManualDialog;
-import com.drawers.banklib.otpdialog.LoadingScreenDialog;
-import com.drawers.banklib.otpdialog.LoadingScreenDialogTimedOut;
-import com.drawers.banklib.otpdialog.SubmitDialog;
+import com.drawers.banklib.otpdialog.ApproveOtpView;
+import com.drawers.banklib.otpdialog.BaseView;
+import com.drawers.banklib.otpdialog.EnterManualView;
+import com.drawers.banklib.otpdialog.LoadingScreenView;
+import com.drawers.banklib.otpdialog.LoadingScreenViewTimedOut;
+import com.drawers.banklib.otpdialog.SubmitView;
 import com.drawers.banklib.utils.JavascriptInjectionModels;
 import java.util.regex.Matcher;
 
 import static android.util.Log.d;
 import static com.drawers.banklib.R.style.DialogTheme;
-import static com.drawers.banklib.otpdialog.LoadingScreenDialog.Listener;
+import static com.drawers.banklib.otpdialog.LoadingScreenView.Listener;
 import static com.drawers.banklib.utils.JavascriptInjectionModels.getOtpSubmitJavascript;
 import static com.drawers.banklib.view.OtpScreenRouter.OtpScreenState.APPROVE;
 import static com.drawers.banklib.view.OtpScreenRouter.OtpScreenState.ENTER_MANUAL;
@@ -31,18 +31,18 @@ import static java.lang.String.format;
  */
 public class OtpScreenRouter implements BankRouter,
     Listener,
-    LoadingScreenDialogTimedOut.Listener,
-    ApproveOtpDialog.Listener,
-    EnterManualDialog.Listener {
+    LoadingScreenViewTimedOut.Listener,
+    ApproveOtpView.Listener,
+    EnterManualView.Listener {
 
-  @NonNull private final ApproveOtpDialog approveOtpDialog;
-  @NonNull private BaseDialog baseDialog;
+  @NonNull private final ApproveOtpView approveOtpDialog;
+  @NonNull private BaseView baseView;
   @NonNull private OtpScreenState currentScreenState;
-  @NonNull private final EnterManualDialog enterManualDialog;
+  @NonNull private final EnterManualView enterManualDialog;
   @NonNull private final JavaInterface javaInterface;
-  @NonNull private final LoadingScreenDialog loadingScreenDialog;
-  @NonNull private final LoadingScreenDialogTimedOut loadingScreenDialogTimedOut;
-  @NonNull private final SubmitDialog submitDialog;
+  @NonNull private final LoadingScreenView loadingScreenDialog;
+  @NonNull private final LoadingScreenViewTimedOut loadingScreenDialogTimedOut;
+  @NonNull private final SubmitView submitDialog;
   @NonNull private CountDownTimer countDownTimer;
   @NonNull private final OtpModel otpModel;
 
@@ -54,12 +54,12 @@ public class OtpScreenRouter implements BankRouter,
     this.otpModel = otpModel;
     this.javaInterface = javaInterface;
 
-    approveOtpDialog = new ApproveOtpDialog(context, DialogTheme, this);
-    loadingScreenDialog = new LoadingScreenDialog(context, DialogTheme, this);
+    approveOtpDialog = new ApproveOtpView(context, DialogTheme, this);
+    loadingScreenDialog = new LoadingScreenView(context, DialogTheme, this);
     loadingScreenDialogTimedOut =
-        new LoadingScreenDialogTimedOut(context, DialogTheme, this);
-    enterManualDialog = new EnterManualDialog(context, DialogTheme, this);
-    submitDialog = new SubmitDialog(context, DialogTheme);
+        new LoadingScreenViewTimedOut(context, DialogTheme, this);
+    enterManualDialog = new EnterManualView(context, DialogTheme, this);
+    submitDialog = new SubmitView(context, DialogTheme);
     countDownTimer = new CountDownTimer(30000, 1000) {
       @Override public void onTick(long l) {
         loadingScreenDialog.tick(l);
@@ -70,7 +70,7 @@ public class OtpScreenRouter implements BankRouter,
       }
     };
 
-    baseDialog = loadingScreenDialog;
+    baseView = loadingScreenDialog;
     currentScreenState = LOADING;
   }
 
@@ -86,17 +86,17 @@ public class OtpScreenRouter implements BankRouter,
   }
 
   private void moveToState(OtpScreenState otpScreenState) {
-    baseDialog.detach();
+    baseView.detach();
     moveToNextState(otpScreenState);
-    baseDialog.attach();
+    baseView.attach();
   }
 
   @Override public void attachToView() {
-    baseDialog.attach();
+    baseView.attach();
   }
 
   @Override public void detachFromView() {
-    baseDialog.detach();
+    baseView.detach();
   }
 
   private void moveToNextState(OtpScreenState nextState) {
@@ -104,15 +104,15 @@ public class OtpScreenRouter implements BankRouter,
       case LOADING:
         switch (nextState) {
           case ENTER_MANUAL:
-            baseDialog = enterManualDialog;
+            baseView = enterManualDialog;
             currentScreenState = ENTER_MANUAL;
             break;
           case LOADING_TIMEOUT:
-            baseDialog = loadingScreenDialogTimedOut;
+            baseView = loadingScreenDialogTimedOut;
             currentScreenState = LOADING_TIMEOUT;
             break;
           case APPROVE:
-            baseDialog = approveOtpDialog;
+            baseView = approveOtpDialog;
             currentScreenState = APPROVE;
             break;
           default:
@@ -122,15 +122,15 @@ public class OtpScreenRouter implements BankRouter,
       case LOADING_TIMEOUT:
         switch (nextState) {
           case ENTER_MANUAL:
-            baseDialog = enterManualDialog;
+            baseView = enterManualDialog;
             currentScreenState = ENTER_MANUAL;
             break;
           case LOADING:
-            baseDialog = loadingScreenDialog;
+            baseView = loadingScreenDialog;
             currentScreenState = LOADING;
             break;
           case APPROVE:
-            baseDialog = approveOtpDialog;
+            baseView = approveOtpDialog;
             currentScreenState = APPROVE;
             break;
           default:
@@ -140,7 +140,7 @@ public class OtpScreenRouter implements BankRouter,
       case ENTER_MANUAL:
         switch (nextState) {
           case APPROVE:
-            baseDialog = approveOtpDialog;
+            baseView = approveOtpDialog;
             currentScreenState = APPROVE;
             break;
         }
@@ -148,7 +148,7 @@ public class OtpScreenRouter implements BankRouter,
       case APPROVE:
         switch (nextState) {
           case SUBMIT:
-            baseDialog = submitDialog;
+            baseView = submitDialog;
             currentScreenState = SUBMIT;
             break;
           default:
@@ -162,6 +162,7 @@ public class OtpScreenRouter implements BankRouter,
           default:
             throwIncorrectStateTransition(nextState);
         }
+        break;
       default:
         throwIncorrectStateTransition(nextState);
     }
@@ -190,6 +191,7 @@ public class OtpScreenRouter implements BankRouter,
     moveToState(LOADING);
   }
 
+  // TODO - Add support for sender.
   public void setOtp(String sender, String payload) {
     if (sender == null /*|| !sender.equals(otpModel.getOtpSender())*/ || payload == null) return;
     Matcher matcher = otpModel.getPattern().matcher(payload);

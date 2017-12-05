@@ -12,11 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
-public abstract class BaseDialog extends Dialog implements DialogInterface {
+public abstract class BaseView extends Dialog implements DialogInterface {
 
   private View view;
 
-  public BaseDialog(@NonNull Context context, @StyleRes int themeResId) {
+  public BaseView(@NonNull Context context, @StyleRes int themeResId) {
     super(context, themeResId);
     init(context);
   }

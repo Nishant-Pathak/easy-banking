@@ -9,13 +9,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import com.drawers.banklib.R;
 
-public class EnterManualDialog extends BaseDialog {
+public class EnterManualView extends BaseView {
 
   @NonNull private final Listener listener;
 
   private EditText otpEntryField;
 
-  public EnterManualDialog(@NonNull Context context, @StyleRes int themeResId,
+  public EnterManualView(@NonNull Context context, @StyleRes int themeResId,
       @NonNull Listener listener) {
     super(context, themeResId);
     this.listener = listener;

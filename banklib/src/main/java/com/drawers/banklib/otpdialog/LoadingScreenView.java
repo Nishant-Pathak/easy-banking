@@ -8,12 +8,12 @@ import android.widget.Button;
 import android.widget.TextView;
 import com.drawers.banklib.R;
 
-public class LoadingScreenDialog extends BaseDialog {
+public class LoadingScreenView extends BaseView {
 
   @NonNull private Listener listener;
   private TextView timerView;
 
-  public LoadingScreenDialog(@NonNull Context context, @StyleRes int themeResId,
+  public LoadingScreenView(@NonNull Context context, @StyleRes int themeResId,
       @NonNull Listener listener) {
     super(context, themeResId);
     this.listener = listener;

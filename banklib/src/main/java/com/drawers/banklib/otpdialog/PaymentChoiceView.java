@@ -7,9 +7,9 @@ import android.view.View;
 import android.widget.Button;
 import com.drawers.banklib.R;
 
-public class PaymentChoiceDialog extends BaseDialog {
+public class PaymentChoiceView extends BaseView {
 
-  public PaymentChoiceDialog(@NonNull Context context, @StyleRes int themeResId) {
+  public PaymentChoiceView(@NonNull Context context, @StyleRes int themeResId) {
     super(context, themeResId);
   }
 

@@ -41,16 +41,12 @@ public final class EasyBankBuilder {
       MappingFileParser mappingFileParser =
           new MappingFileParser(context.getResources().openRawResource(R.raw.mapping));
       models = mappingFileParser.parse();
-      messageBroadcastReceiver = new MessageBroadcastReceiver();
     } catch (Exception ignore) {
       Log.e(TAG, "Failed to read models from stream");
     }
 
-    if (models == null ||
-        messageBroadcastReceiver == null ||
-        context == null ||
-        webView == null
-        ) {
+    messageBroadcastReceiver = new MessageBroadcastReceiver();
+    if (models == null) {
       Log.d(TAG, "Returning dummy client");
       return new EasyBankDummyClient();
     }
@@ -65,7 +61,6 @@ public final class EasyBankBuilder {
   }
 
   @VisibleForTesting
-
   public List<EventListener> getEventListeners() {
     return eventListeners;
   }

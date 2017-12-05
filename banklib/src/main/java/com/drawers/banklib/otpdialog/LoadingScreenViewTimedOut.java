@@ -7,11 +7,11 @@ import android.view.View;
 import android.widget.Button;
 import com.drawers.banklib.R;
 
-public class LoadingScreenDialogTimedOut extends BaseDialog {
+public class LoadingScreenViewTimedOut extends BaseView {
 
   @NonNull private final Listener listener;
 
-  public LoadingScreenDialogTimedOut(@NonNull Context context, @StyleRes int themeResId,
+  public LoadingScreenViewTimedOut(@NonNull Context context, @StyleRes int themeResId,
       @NonNull Listener listener) {
     super(context, themeResId);
     this.listener = listener;
