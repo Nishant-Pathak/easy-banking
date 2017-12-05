@@ -22,6 +22,7 @@ public class MessageBroadcastReceiver extends BroadcastReceiver {
     this.messageListener = null;
   }
 
+  @SuppressWarnings({"deprecation", "ConstantConditions"})
   @Override public void onReceive(Context context, Intent intent) {
     Bundle bundle = intent.getExtras();
     SmsMessage[] smsMessages = null;

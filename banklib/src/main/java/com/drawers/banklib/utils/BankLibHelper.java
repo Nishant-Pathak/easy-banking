@@ -29,4 +29,8 @@ public class BankLibHelper {
     if (obj == null) throw new NullPointerException();
     return obj;
   }
+
+  private BankLibHelper() {
+    throw new AssertionError("Initialization not possible");
+  }
 }

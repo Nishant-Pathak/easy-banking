@@ -9,13 +9,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import com.drawers.banklib.R;
 
-public class ApproveOtpDialog extends BaseDialog {
+public class ApproveOtpView extends BaseView {
 
   @NonNull private final Listener listener;
   private EditText otpScreenEntryField;
   private Button otpSubmitButton;
 
-  public ApproveOtpDialog(@NonNull Context context, @StyleRes int themeResId,
+  public ApproveOtpView(@NonNull Context context, @StyleRes int themeResId,
       @NonNull Listener listener) {
     super(context, themeResId);
     this.listener = listener;

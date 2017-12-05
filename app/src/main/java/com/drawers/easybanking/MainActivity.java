@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
           }
         }).build(MainActivity.this, webView);
     webView.setWebViewClient(easyBankClient);
-    webView.loadUrl("https://www.freecharge.in/");
+    webView.loadUrl("https://paytm.com/");
   }
 
   @Override protected void onDestroy() {

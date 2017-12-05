@@ -8,9 +8,9 @@ import android.view.View;
 /**
  * Submit dialog doesn't have a UI and just a state.
  */
-public class SubmitDialog extends BaseDialog {
+public class SubmitView extends BaseView {
 
-  public SubmitDialog(@NonNull Context context, @StyleRes int themeResId) {
+  public SubmitView(@NonNull Context context, @StyleRes int themeResId) {
     super(context, themeResId);
   }
 
